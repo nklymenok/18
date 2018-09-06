@@ -1,0 +1,4494 @@
+What Is an "Array"?
+
+Arrays are vital for most programming languages. They are collections of variables, which we call elements:
+
+clip_image002[13]
+
+An array’s elements in C# are numbered with 0, 1, 2, … N-1. Those numbers are called indices. The total number of elements in a given array we call length of an array.
+
+All elements of a given array are of the same type, no matter whether they are primitive or reference types. This allows us to represent a group of similar elements as an ordered sequence and work on them as a whole.
+
+Arrays can be in different dimensions, but the most used are the one-dimensional and the two-dimensional arrays. One-dimensional arrays are also called vectors and two-dimensional are also known as matrices.
+
+Declaration and Allocation of Memory for Arrays
+
+In C# the arrays have fixed length, which is set at the time of their instantiation and determines the total number of elements. Once the length of an array is set we cannot change it anymore.
+
+Declaring an Array
+
+We declare an array in C# in the following way:
+
+int[] myArray;
+
+In this example the variable myArray is the name of the array, which is of integer type (int[]). This means that we declared an array of integer numbers. With [] we indicate, that the variable, which we are declaring, is an array of elements, not a single element.
+
+When we declare an array type variable, it is a reference, which does not have a value (it points to null). This is because the memory for the elements is not allocated yet.
+
+The figure below shows how a declared array variable looks, when the memory for elements of the array is not allocated yet:
+
+clip_image004[8]
+
+In the program’s execution stack the variable with the name myArray is created and its value is set to null (meaning it holds no value).
+
+Creation of an Array – the Operator "new"
+
+In C# we create an array with the help of the keyword new, which is used to allocate memory:
+
+int[] myArray = new int[6];
+
+In this example we allocate an array with length of 6 elements of type int. This means that in the dynamic memory (heap) an area of 6 integer numbers is allocated and they all are initialized with the value 0:
+
+clip_image006[9]
+
+The figure shows, that after the allocation of memory for the array the variable myArray points to an address in the dynamic memory, where the values are. In C#, the elements of an array are always stored in the dynamic memory (called also heap).
+
+During the allocation of the memory for an array we set the total number of the elements in the brackets (a non-negative integer number), defining its length. The type of the elements is written after the reserved word new, so we indicate what type of elements are going to be allocated in the memory.
+
+Array Initialization and Default Values
+
+Before we can use an element of a given array, it has to be initialized or to have a default value. In some programming languages there are no default values and then if we try to access an element, which is not initialized, this may cause an error. In C# all variables, including the elements of arrays have a default initial value. This value is either 0 for the numeral types or its equivalent for the non-primitive types (for example null for a reference type and false for the bool type).
+
+Of course we can set initial values explicitly. We can do this in different ways. Here is one of them:
+
+int[] myArray = { 1, 2, 3, 4, 5, 6 };
+
+In this case we create and initialize the elements of the array at the time of the declaration. On the figure below we see how the array is allocated in the memory when its values are initialized at the moment of its declaration:
+
+clip_image008[6]
+
+With this syntax we use curly brackets instead of the operator new. Between the brackets we list the initial values of the array, separated by commas. Their count defines the length of the array.
+
+Declaration and Initialization of an Array – Example
+
+Here is one more example how to declare and initialize an array:
+
+string[] daysOfWeek =
+
+        { "Monday", "Tuesday", "Wednesday","Thursday", "Friday",         "Saturday", "Sunday" };
+
+In this case we allocate an array of seven elements of type string. The type string is a reference type (object) and its values are stored in the dynamic memory. The variable daysOfWeek is allocated in the stack memory, and points to a section of the dynamic memory containing the elements of the array. The type of each of these seven elements is string, which itself points to a different section of the dynamic memory, where the real value is stored.
+
+On this figure we see how the array is allocated in the memory:
+
+clip_image010[4]
+
+Boundaries of an Array
+
+Arrays are by default zero-based, which means the enumeration of the elements starts from 0. The first element has the index 0, the second – 1, etc. In an array of N elements, the last element has the index N-1.
+
+Access to the Elements of an Array
+
+We access the array elements directly using their indices. Each element can be accessed through the name of the array and the element’s index (consecutive number) placed in the brackets. We can access given elements of the array both for reading and for writing, which means we can treat elements as variables.
+
+Here is an example for accessing an element of an array:
+
+myArray[index] = 100;
+
+In the example above we set a value of 100 to the element, which is at position index.
+
+Here is an example, where we allocate an array of numbers and then we change some of them:
+
+int[] myArray = new int[6];
+
+myArray[1] = 1;
+
+myArray[5] = 5;
+
+After the change, the array is allocated in the memory as shown below:
+
+clip_image012
+
+As we can see, all elements, except those for which values are explicitly set, are initialized with the value 0 when the memory of the array was allocated.
+
+We can iterate through the array using a loop statement. The most common form of such iteration is by using a for-loop:
+
+int[] arr = new int[5];
+
+for (int i = 0; i < arr.Length; i++)
+
+{
+
+    arr[i] = i;
+
+}
+
+Going Out of Bounds of the Array
+
+The .NET Framework does an automatic check on each element access attempt, whether the index is valid or it is out of the range of the array. When we try to access an invalid (not existing) element in an array, a System.IndexOutOfRangeException is thrown. The automatic check really helps the developers find errors while working with arrays. Of course, checking for exceptions has its price. Checks affect the performance, but that’s nothing compared to avoiding errors like "out of range", "access to unallocated memory", etc.
+
+Here is an example, where we are trying to access an element, which is out of the range of the array:
+
+IndexOutOfRangeExample.cs
+
+class IndexOutOfRangeExample
+
+{
+
+    static void Main()
+
+    {
+
+        int[] myArray = { 1, 2, 3, 4, 5, 6 };
+
+        Console.WriteLine(myArray[6]);
+
+    }
+
+}
+
+In the example above we allocate an array, which contains six integer numbers. The first index is 0, and the last index is 5. We are trying to print to the console an element with index 6, but because there is no such element this leads to an exception:
+
+clip_image014
+
+Reversing an Array – Example
+
+In the next example we will access elements and change them using their indices. The task is to print the elements in reversed order. We will reverse the elements of the array using a second, auxiliary array, where we will keep the elements of the first one, but in a reversed order. Note that the length of both arrays is the same and it stays unchanged after the first allocation:
+
+ArrayReverseExample.cs
+
+class ArrayReverseExample
+
+{
+
+    static void Main()
+
+    {
+
+        int[] array = { 1, 2, 3, 4, 5 };
+
+        // Get array size
+
+        int length = array.Length;
+
+        // Declare and create the reversed array
+
+        int[] reversed = new int[length];
+
+ 
+
+        // Initialize the reversed array
+
+        for (int index = 0; index < length; index++)
+
+        {
+
+            reversed[length - index - 1] = array[index];
+
+        }
+
+ 
+
+        // Print the reversed array
+
+        for (int index = 0; index < length; index++)
+
+        {
+
+            Console.Write(reversed[index] + " ");
+
+        }
+
+    }
+
+}
+
+// Output: 5 4 3 2 1
+
+The example works in the following way: initially we allocate a one-dimensional array of type int and we initialize it with the numbers from 1 to 5. After that we keep the length of the array in the variable length. Note that we are using the property Length, which returns the total count of the elements of the array. In C# each array has a length property.
+
+After that we declare the array reversed with the same length, where we will keep elements of the original array, but in a reversed order.
+
+To reverse the elements we use a for-loop. At each iteration we increment the index variable by one and we make sure we access all consecutive elements of the array. The loop condition ensures that the array will be iterated from end to end.
+
+Let’s follow what happens when we iterate through the array. On the first iteration, index has a value of 0. Using array[index] we access the first element of the array, and respectively with reversed[length - index - 1] we access the last element of the new array reversed where we assign the values. Thus, we appropriated the value of the first element of the array to the last element of the reversed array. At each iteration index is incremented by one. This way, we access the next element in the order of array and the previous element in the order of reversed.
+
+As a result we reversed the array and printed it. In the example we showed consecutive iterations through the array, which can also be done with different types of loop constructs (e.g. while and foreach).
+
+Reading an Array from the Console
+
+Let’s see how we can read values of an array from the console. We will use a for-loop and the .NET Framework tools for reading from the console.
+
+Initially we read a line from the console using Console.ReadLine(), and then we parse that line to an integer number using int.Parse() and we set it to the variable n. We then use the number n as length of the array.
+
+int n = int.Parse(Console.ReadLine());
+
+int[] array = new int[n];
+
+Again we use a loop to iterate through the array. At each iteration we set the current element to what we have read from the console. The loop will continue n times, which means it will iterate through the array and so we will read a value for each element of the array:
+
+for (int i = 0; i < n; i++)
+
+{
+
+    array[i] = int.Parse(Console.ReadLine());
+
+}
+
+Check for Symmetric Array – Example
+
+An array is symmetric if the first and the last elements are equal and at the same time the second element and the last but one are equal as well and so on. On the figure a few examples for symmetric arrays are shown:
+
+clip_image016
+
+In the next example we will check whether an array is symmetric:
+
+Console.Write("Enter a positive integer: ");
+
+int n = int.Parse(Console.ReadLine());
+
+int[] array = new int[n];
+
+ 
+
+Console.WriteLine("Enter the values of the array:");
+
+ 
+
+for (int i = 0; i < n; i++)
+
+{
+
+    array[i] = int.Parse(Console.ReadLine());
+
+}
+
+ 
+
+bool symmetric = true;
+
+for (int i = 0; i < array.Length / 2; i++)
+
+{
+
+    if (array[i] != array[n - i - 1])
+
+    {
+
+        symmetric = false;
+
+        break;
+
+    }
+
+}
+
+ 
+
+Console.WriteLine("Is symmetric? {0}", symmetric);
+
+We initialize an array and we read its elements from the console. We need to iterate through half of the array to check whether it is symmetric. The middle element of the array has an index array.Length / 2. If the length is an odd number this index is exactly the middle one, but if it is an even number, the index is to the right of the middle (the middle is between two elements). Thus the loop runs from 0 to array.Length / 2 (non-inclusive).
+
+To check whether an array is symmetric, we use a bool variable, and initially assume that the array is symmetric. During the iteration through the array we compare the first with the last element, the second with the last but one and so on. If at some point the compared elements are not equal, then we set the bool variable to false, which means the array is not symmetric.
+
+In the end we print the value of the bool variable to the console.
+
+Printing an Array to the Console
+
+Often we have to print the elements of a given array to the console, after we have finished working with it.
+
+We print elements of an array to the console similarly to the initializing of the elements, i.e. by using a loop to iterate through the array. There are no strict rules for printing, but often some sort of suitable formatting is used.
+
+A frequent mistake is an attempt to print an array like a number:
+
+string[] array = { "one", "two", "three", "four" };
+
+Console.WriteLine(array);
+
+Unfortunately this code does not print the elements of an array, just its type. Here is what we get after the execution of this code:
+
+clip_image018
+
+We print the elements of an array by hand, by using a for-loop:
+
+string[] array = { "one", "two", "three", "four" };
+
+ 
+
+for (int index = 0; index < array.Length; index++)
+
+{
+
+    // Print each element on a separate line
+
+    Console.WriteLine("Element[{0}] = {1}", index, array[index]);
+
+}
+
+We are iterating through the array using the for-loop, which will go array.Length times, and we will print the current element using Console.WriteLine() and a formatted string. Here is the result:
+
+Element[0] = one
+
+Element[1] = two
+
+Element[2] = three
+
+Element[3] = four
+
+Iteration through Elements of an Array
+
+As we can see, the iteration through the elements of an array is one of the most used techniques when we work with arrays. Consecutive iterating using a loop will allow us to access each element through its index and we will be able to modify it as we want. We can do that with different loop constructs, but the most appropriate loop is the for-statement. We will examine in details how this type of iteration works.
+
+Iteration with a For Loop
+
+It is a good practice to use for-loops, when we work with arrays and structures with indices. In the following example we will double the values of all elements of an array of numbers and we will print them:
+
+int[] array = new int[] { 1, 2, 3, 4, 5 };
+
+ 
+
+Console.Write("Output: ");
+
+for (int index = 0; index < array.Length; index++)
+
+{
+
+    // Doubling the number
+
+    array[index] = 2 * array[index];
+
+    // Print the number
+
+    Console.Write(array[index] + " ");
+
+}
+
+// Output: 2 4 6 8 10
+
+Using a for-loop we keep track of the current index of the array and we access the elements as needed. We do not have to iterate consecutively through all of them, which means the index that we are using in the for-loop may iterate through the elements in a way that our algorithm requires. For example we can iterate through some of the elements of the array, not through all of them:
+
+int[] array = new int[] { 1, 2, 3, 4, 5 };
+
+ 
+
+Console.Write("Output: ");
+
+for (int index = 0; index < array.Length; index += 2)
+
+{
+
+    array[index] = array[index] * array[index];
+
+    Console.Write(array[index] + " ");
+
+}
+
+// Output: 1 9 25
+
+In this example we are iterating through all elements at even positions and we square their values.
+
+Sometimes we want to iterate through the array in a reverse order. We do that in a similar way, except that the for-loop will start with the index of the last element and the index will decrease on each step until its value gets to 0 (inclusive). Here is an example:
+
+int[] array = new int[] { 1, 2, 3, 4, 5 };
+
+ 
+
+Console.Write("Reversed: ");
+
+for (int index = array.Length - 1; index >= 0; index--)
+
+{
+
+    Console.Write(array[index] + " ");
+
+}
+
+// Reversed: 5 4 3 2 1
+
+In this example we are iterating through the array in reverse order and we print each element to the console.
+
+Iteration with "foreach" Loop
+
+One of the most used constructs for iterating through elements of an array is foreach. The foreach-loop construct in C# is as follows:
+
+foreach (var item in collection)
+
+{
+
+    // Process the value here
+
+}
+
+In this programming construct var is the type of the elements, which we iterate through. The collection is the array (or any other collection of elements) and item is the current element of the array on each step.
+
+In general the foreach loop construct has the same properties like the for-loop. The main difference is that the iteration is made always through all elements – from the start to the end. We cannot access the current index, we are just iterating through the collection in a way, defined by the collection itself. For arrays the order of iteration is consecutive from the first element to the last one. The loop variable in foreach-loops is read-only so we cannot modify the current loop item from the loop body.
+
+The foreach-loop statement is used, when we do not need to change the elements, but just to read them.
+
+Iteration with "foreach" Loop – Example
+
+In the next example we will learn how to use the foreach loop to iterate through the array:
+
+string[] capitals =
+
+        { "Sofia", "Washington", "London", "Paris" };
+
+ 
+
+foreach (string capital in capitals)
+
+{
+
+    Console.WriteLine(capital);
+
+}
+
+After we declared an array of strings capitals, we iterate through the array using foreach loop and we print the elements to the console. The current element on each step is stored in a variable capital. We get the following result when we execute the code:
+
+Sofia
+
+Washington
+
+London
+
+Paris
+
+Multidimensional Arrays
+
+The one-dimensional arrays are known also as vectors in mathematics. Often we need arrays with more than one dimension. For example we can easily represent the standard chess board as a two-dimensional array with size 8 by 8 (8 cells in a horizontal direction and 8 cells in a vertical direction).
+
+What Is a Multidimensional Array? What Are Matrices?
+
+Every valid type in C# can be used for a type of an array. So, we can have an array of arrays, which we will discuss later.
+
+We declare a one-dimensional array of integer numbers using int[], and we declare a two-dimensional with int[,]. This example shows that:
+
+int[,] twoDimensionalArray;
+
+Those arrays we will call two-dimensional, because they have two dimensions. They are also known as matrices (it is mathematical term). In general arrays with more than one dimension we will call multidimensional.
+
+This way we can declare three-dimensional arrays as we add one more dimension:
+
+int[,,] threeDimensionalArray;
+
+In theory there is no limit for an array dimensions, but in practice we do not use much arrays with more than two dimensions therefore we will focus on two-dimensional arrays.
+
+Multidimensional Array Declaration and Allocation
+
+We declare multidimensional arrays in a way similar to one-dimensional arrays. Each dimension except the first is marked with comma:
+
+int[,] intMatrix;
+
+float[,] floatMatrix;
+
+string[,,] strCube;
+
+In the example above we create two-dimensional and three-dimensional arrays. Each dimension is represented by a comma in the square brackets [].
+
+We are allocating memory for multidimensional arrays by using the keyword new and for each dimension we set a length in the brackets as shown:
+
+int[,] intMatrix = new int[3, 4];
+
+float[,] floatMatrix = new float[8, 2];
+
+string[,,] stringCube = new string[5, 5, 5];
+
+In this example intMatrix is a two-dimensional array with 3 elements of type int[] and each of those 3 elements has a length of 4. Two-dimensional arrays are difficult to understand explained that way. Therefore we can imagine them as two-dimensional matrices, which have rows and columns for the dimensions:
+
+clip_image020
+
+The rows and the columns of the square matrices are numbered with indices from 0 to n-1. If a two-dimensional array has a size of m by n, there are exactly m*n elements.
+
+Two-Dimensional Array Initialization
+
+We initialize two-dimensional arrays in the same way as we initialize one-dimensional arrays. We can list the element values straight after the declaration:
+
+int[,] matrix =
+
+{
+
+    {1, 2, 3, 4}, // row 0 values
+
+    {5, 6, 7, 8}, // row 1 values
+
+};
+
+// The matrix size is 2 x 4 (2 rows, 4 cols)
+
+In the example above we initialize a two-dimensional array of type integer with size of 2 rows and 4 columns. In the outer brackets we place the elements of the first dimension, i.e. the rows of the array. Each row contains one dimensional array, which we know how to initialize.
+
+Accessing the Elements of a Multidimensional Array
+
+Matrices have two dimensions and respectively we access each element by using two indices: one for the rows and one for the columns. Multidimensional arrays have different indices for each dimension.
+
+clip_image021[7]
+
+Each dimension in a multidimensional array starts at index 0.
+
+Let’s examine the next example:
+
+int[,] matrix =
+
+{
+
+    {1, 2, 3, 4},
+
+    {5, 6, 7, 8},
+
+};
+
+The array matrix has 8 elements, stored in 2 rows and 4 columns. Each element can be accessed in the following way:
+
+matrix[0, 0]      matrix[0, 1]      matrix[0, 2]      matrix[0, 3]
+
+matrix[1, 0]      matrix[1, 1]      matrix[1, 2]      matrix[1, 3]
+
+In this example we can access each element using indices. If we assign the index for rows to row, and the index for columns to col, then we can access any element as shown:
+
+matrix[row, col]
+
+When we use multidimensional arrays each element is unique and can be identified with indices from the array:
+
+nDimensionalArray[index1, …, indexN]
+
+Length of Multidimensional Arrays
+
+Each dimension of a multidimensional array has its own length, which can be accessed during the execution of the program. Let’s look at an example for a two-dimensional array:
+
+int[,] matrix =
+
+{
+
+    {1, 2, 3, 4},
+
+    {5, 6, 7, 8},
+
+};
+
+We can get the number of the rows of this two-dimensional array by using matrix.GetLength(0) and the number of all columns per row with matrix.GetLength(1). So, in this case matrix.GetLength(0) returns 2 and matrix.GetLength(1) returns 4.
+
+Printing Matrices – Example
+
+In the next example we will demonstrate how we can print two-dimensional arrays to the console:
+
+// Declare and initialize a matrix of size 2 x 4
+
+int[,] matrix =
+
+{
+
+    {1, 2, 3, 4}, // row 0 values
+
+    {5, 6, 7, 8}, // row 1 value
+
+};
+
+ 
+
+// Print the matrix on the console
+
+for (int row = 0; row < matrix.GetLength(0); row++)
+
+{
+
+    for (int col = 0; col < matrix.GetLength(1); col++)
+
+    {
+
+        Console.Write(matrix[row, col]);
+
+    }
+
+    Console.WriteLine();
+
+}
+
+First we declare and initialize an array, which we want to iterate through and print to the console. The array is two-dimensional, therefore we use a for-loop which will iterate through the rows and a nested for loop which for each row will iterate through the columns. At each iteration we will print the current element using the appropriate method to access this element by using its two indices (row and column). Finally, if we execute this piece of code we will get the following result:
+
+1 2 3 4
+
+5 6 7 8
+
+Reading Matrices from the Console – Example
+
+In this example we will learn how to read a two-dimensional array from the console. First, we read the values (lengths) of the two-dimensions and then by using two nested loops we assign the value of each element (and in the end we print out the values of the array):
+
+Console.Write("Enter the number of the rows: ");
+
+int rows = int.Parse(Console.ReadLine());
+
+ 
+
+Console.Write("Enter the number of the columns: ");
+
+int cols = int.Parse(Console.ReadLine());
+
+ 
+
+int[,] matrix = new int[rows, cols];
+
+ 
+
+Console.WriteLine("Enter the cells of the matrix:");
+
+ 
+
+for (int row = 0; row < rows; row++)
+
+{
+
+    for (int col = 0; col < cols; col++)
+
+    {
+
+             Console.Write("matrix[{0},{1}] = ",row, col);
+
+             matrix[row, col] = int.Parse(Console.ReadLine());
+
+    }
+
+}
+
+ 
+
+for (int row = 0; row < matrix.GetLength(0); row++)
+
+{
+
+    for (int col = 0; col < matrix.GetLength(1); col++)
+
+    {
+
+             Console.Write(" " + matrix[row, col]);
+
+    }
+
+    Console.WriteLine();
+
+}
+
+The program output when we execute it (in this case the array consists of three rows and two columns) is:
+
+Enter the number of the rows: 3
+
+Enter the number of the columns: 2
+
+Enter the cells of the matrix:
+
+matrix[0,0] = 2
+
+matrix[0,1] = 3
+
+matrix[1,0] = 5
+
+matrix[1,1] = 10
+
+matrix[2,0] = 8
+
+matrix[2,1] = 9
+
+ 2 3
+
+ 5 10
+
+ 8 9
+
+Maximal Platform in a Matrix – Example
+
+In the next example we will solve another interesting problem: we are given a two-dimensional rectangular array (matrix) of integers and our task is to find the sub-matrix of size of 2 by 2 with maximum sum of its elements and to print it to the console.
+
+One solution to the problem might be the following:
+
+MaxPlatform2x2.cs
+
+class MaxPlatform2x2
+
+{
+
+    static void Main()
+
+    {
+
+        // Declare and initialize the matrix
+
+        int[,] matrix = {
+
+                   { 0, 2, 4, 0, 9, 5 },
+
+                   { 7, 1, 3, 3, 2, 1 },
+
+                   { 1, 3, 9, 8, 5, 6 },
+
+                   { 4, 6, 7, 9, 1, 0 }
+
+        };
+
+ 
+
+        // Find the maximal sum platform of size 2 x 2
+
+        long bestSum = long.MinValue;
+
+        int bestRow = 0;
+
+        int bestCol = 0;
+
+ 
+
+        for (int row = 0; row < matrix.GetLength(0) - 1; row++)
+
+        {
+
+            for (int col = 0; col < matrix.GetLength(1) - 1; col++)
+
+            {
+
+                long sum = matrix[row, col] + matrix[row, col + 1] +
+
+                    matrix[row + 1, col] + matrix[row + 1, col + 1];
+
+                if (sum > bestSum)
+
+                {
+
+                    bestSum = sum;
+
+                    bestRow = row;
+
+                    bestCol = col;
+
+                }
+
+            }
+
+        }
+
+ 
+
+        // Print the result
+
+        Console.WriteLine("The best platform is:");
+
+        Console.WriteLine("  {0} {1}",
+
+                   matrix[bestRow, bestCol],
+
+                   matrix[bestRow, bestCol + 1]);
+
+             Console.WriteLine("  {0} {1}",
+
+                   matrix[bestRow + 1, bestCol],
+
+            matrix[bestRow + 1, bestCol + 1]);
+
+        Console.WriteLine("The maximal sum is: {0}", bestSum);
+
+    }
+
+}
+
+If we execute the program, we will see that it works properly:
+
+The best platform is:
+
+  9 8
+
+  7 9
+
+The maximal sum is: 33
+
+We will explain the algorithm. First we create a two-dimensional array, which contains integer numbers. We declare our auxiliary variables bestSum, bestRow, bestCol and we initialize bestSum with the minimal value of type long (so any other value is greater than this one). Note that sum of 4 integers may not fit in int, so we use long.
+
+In the variable bestSum we keep the current maximal sum and in bestRow and bestCol we keep the current best sub-matrix. This means the current row and current column describe the start element for the sub-matrix of size 2 x 2, which is currently found to have the maximal sum of its elements.
+
+To access all elements of a sub-array with a size of 2 by 2 we need the indices of the first element. Having them we can easily access the rest 3 elements:
+
+matrix[row, col]
+
+matrix[row, col + 1]
+
+matrix[row + 1, col]
+
+matrix[row + 1, col + 1]
+
+In this example row and col are the indices of the first element of the sub-matrix with a size of 2 by 2, which is part of the array matrix.
+
+After we know how to access all four elements of the matrix with a size of 2 by 2, starting from a particular row and column, we can look at the algorithm, which we will use to find the maximal sub-matrix.
+
+We need to iterate through each 2 x 2 platform in the matrix until we reach the platform with the best sum. We will do this using two nested for-loops and two variables row and col. Note that we are not iterating through the entire matrix, because if we try to access index row + 1 or col + 1, as we are at the last row or column we will go out of the range of the matrix, respectively System.IndexOutOfRangeException will be thrown.
+
+We access the neighbor elements of each current element of the sub-matrix and we sum them. Then we check if our current sum is bigger than our current highest sum for the moment. If it is so, our current sum becomes our best sum and our current indices will update bestRow and bestCol. So, after the entire iteration through the main matrix we will find the maximal sum and the first element of the sub-matrix of size 2 by 2 and its indices.
+
+If there is more than one sub-matrix with the same maximal sum, we will find the one, which appears first.
+
+At the end of the example we are printing to the console the requested sub-matrix of size 2 x 2 and its sum of elements in an appropriate way.
+
+Arrays of Arrays
+
+In C# we can have arrays of arrays, which we call jagged arrays.
+
+Jagged arrays are arrays of arrays, or arrays in which each row contains an array of its own, and that array can have length different than those in the other rows.
+
+Declaration and Allocation an Array of Arrays
+
+The only difference in the declaration of the jagged arrays compared to the regular multidimensional array is that we do not have just one pair of brackets. With the jagged arrays we have a pair brackets per dimension. We allocate them this way:
+
+int[][] jaggedArray;
+
+jaggedArray = new int[2][];
+
+jaggedArray[0] = new int[5];
+
+jaggedArray[1] = new int[3];
+
+Here is how we declare, allocate and initialize an array of arrays (a jagged array whose elements are arrays of integer values):
+
+int[][] myJaggedArray = {
+
+    new int[] {5, 7, 2},
+
+    new int[] {10, 20, 40},
+
+    new int[] {3, 25}
+
+};
+
+Memory Allocation
+
+The figure below depicts how the now declared jagged array myJaggedArray is allocated in the memory. As we see the jagged arrays are an aggregation of references. A jagged array does not directly contain any arrays, but rather has elements pointing to them. The size is unknown and that is why CLR just keeps references to the internal arrays. After we allocate memory for one array-element of the jagged array, then the reference starts pointing to the newly created block in the dynamic memory. The variable myJaggedArray is stored in the execution stack of the program and points to a block in the dynamic memory, which contains a sequence of three references to other three blocks in memory; each of them contains an array of integer numbers – the elements of the jagged array:
+
+clip_image023
+
+Initialization and Access to the Elements
+
+We can access elements of the arrays, which are part of the jagged array by using their index. In next example we will access the element with index 3 of the array stored at index 0 in the myJaggedArray declared above:
+
+myJaggedArray[0][2] = 45;
+
+The elements of the jagged array can be one-dimensional and multi-dimensional arrays. Here is an example for jagged array of two-dimensional arrays:
+
+int[][,] jaggedOfMulti = new int[2][,];
+
+jaggedOfMulti[0] = new int[,] { { 5, 15 }, { 125, 206 } };
+
+jaggedOfMulti[1] = new int[,] { { 3, 4, 5 }, { 7, 8, 9 } };
+
+Pascal’s Triangle – Example
+
+In the next example we will use a jagged array to generate and visualize the Pascal’s triangle. As we know from mathematics, the first row of the triangle contains the number 1 and each next number is generated by sum of the two numbers on the row above it. The Pascal’s triangle looks like this:
+
+      1
+
+    1   1
+
+    1   2   1
+
+  1   3   3   1
+
+1   4   6   4   1
+
+    . . .
+
+To have a Pascal’s triangle with a given height, for example 12, we allocate a jagged array triangle[][], which contains 1 element on the zero row, 2 – on first, 3 – on second and so on. First we initialize triangle[0][0] = 1 and the rest of the cells will have a default value than 0 by allocation. Then we loop through the rows and from row we will get the values for row+1. It works with nested for loop through the columns on the current row and the following Pascal definitions for values in the triangle: we add the value of the current cell of the current row (triangle[row][col]) to the cell below (triangle[row+1][col]) and to the cell below on the right (triangle
+[row+1][col+1]). We print using an appropriate number of spaces (using method PadLeft () of class String), because we want the result to be aligned.
+
+Here is the code of the described algorithm:
+
+PascalTriangle.cs
+
+class PascalTriangle
+
+{
+
+    static void Main()
+
+    {
+
+        const int HEIGHT = 12;
+
+ 
+
+        // Allocate the array in a triangle form
+
+        long[][] triangle = new long[HEIGHT + 1][];
+
+ 
+
+        for (int row = 0; row < HEIGHT; row++)
+
+        {
+
+            triangle[row] = new long[row + 1];
+
+        }
+
+ 
+
+        // Calculate the Pascal's triangle
+
+        triangle[0][0] = 1;
+
+        for (int row = 0; row < HEIGHT - 1; row++)
+
+        {
+
+            for (int col = 0; col <= row; col++)
+
+            {
+
+                triangle[row + 1][col] += triangle[row][col];
+
+                triangle[row + 1][col + 1] += triangle[row][col];
+
+            }
+
+        }
+
+ 
+
+        // Print the Pascal's triangle
+
+        for (int row = 0; row < HEIGHT; row++)
+
+        {
+
+            Console.Write("".PadLeft((HEIGHT - row) * 2));
+
+            for (int col = 0; col <= row; col++)
+
+            {
+
+                Console.Write("{0,3} ", triangle[row][col]);
+
+            }
+
+            Console.WriteLine();
+
+        }
+
+    }
+
+}
+
+If we execute the program, we will see that it is working properly and it generates a Pascal’s triangle by a given numbers of rows:
+
+              1
+
+              1   1
+
+            1   2   1
+
+            1   3   3   1
+
+          1   4   6   4   1
+
+        1   5  10  10   5   1
+
+        1   6  15  20  15   6   1
+
+      1   7  21  35  35  21   7   1
+
+    1   8  28  56  70  56  28   8   1
+
+    1   9  36  84 126 126  84  36   9   1
+
+  1  10  45 120 210 252 210 120  45  10   1
+
+1  11  55 165 330 462 462 330 165  55  11   1
+
+Exercises
+
+1.    Write a program, which creates an array of 20 elements of type integer and initializes each of the elements with a value equals to the index of the element multiplied by 5. Print the elements to the console.
+
+2.    Write a program, which reads two arrays from the console and checks whether they are equal (two arrays are equal when they are of equal length and all of their elements, which have the same index, are equal).
+
+3.    Write a program, which compares two arrays of type char lexicographically (character by character) and checks, which one is first in the lexicographical order.
+
+4.    Write a program, which finds the maximal sequence of consecutive equal elements in an array. E.g.: {1, 1, 2, 3, 2, 2, 2, 1} a {2, 2, 2}.
+
+5.    Write a program, which finds the maximal sequence of consecutively placed increasing integers. Example: {3, 2, 3, 4, 2, 2, 4} a {2, 3, 4}.
+
+6.    Write a program, which finds the maximal sequence of increasing elements in an array arr[n]. It is not necessary the elements to be consecutively placed. E.g.: {9, 6, 2, 7, 4, 7, 6, 5, 8, 4} a {2, 4, 6, 8}.
+
+7.    Write a program, which reads from the console two integer numbers N and K (K<N) and array of N integers. Find those K consecutive elements in the array, which have maximal sum.
+
+8.    Sorting an array means to arrange its elements in an increasing (or decreasing) order. Write a program, which sorts an array using the algorithm "selection sort".
+
+9.    Write a program, which finds a subsequence of numbers with maximal sum. E.g.: {2, 3, -6, -1, 2, -1, 6, 4, -8, 8} a 11
+
+10.   Write a program, which finds the most frequently occurring element in an array. Example: {4, 1, 1, 4, 2, 3, 4, 4, 1, 2, 4, 9, 3} a 4 (5 times).
+
+11.   Write a program to find a sequence of neighbor numbers in an array, which has a sum of certain number S. Example: {4, 3, 1, 4, 2, 5, 8}, S=11 a {4, 2, 5}.
+
+12.   Write a program, which creates square matrices like those in the figures below and prints them formatted to the console. The size of the matrices will be read from the console. E.g. matrices with size of 4 x 4:
+
+clip_image025[7]
+
+13.   Write a program, which creates a rectangular array with size of n by m elements. The dimensions and the elements should be read from the console. Find a platform with size of (3, 3) with a maximal sum.
+
+14.   Write a program, which finds the longest sequence of equal string elements in a matrix. A sequence in a matrix we define as a set of neighbor elements on the same row, column or diagonal.
+
+clip_image027[7]
+
+15.   Write a program, which creates an array containing all Latin letters. The user inputs a word from the console and as result the program prints to the console the indices of the letters from the word.
+
+16.   Write a program, which uses a binary search in a sorted array of integer numbers to find a certain element.
+
+17.   Write a program, which sorts an array of integer elements using a "merge sort" algorithm.
+
+18.   Write a program, which sorts an array of integer elements using a "quick sort" algorithm.
+
+19.   Write a program, which finds all prime numbers in the range [1…10,000,000].
+
+20.   * Write a program, which checks whether there is a subset of given array of N elements, which has a sum S. The numbers N, S and the array values are read from the console. Same number can be used many times.
+
+Example: {2, 1, 2, 4, 3, 5, 2, 6}, S = 14 a yes (1 + 2 + 5 + 6 = 14)
+
+21.   Write a program which by given N numbers, K and S, finds K elements out of the N numbers, the sum of which is exactly S or says it is not possible.
+
+Example: {3, 1, 2, 4, 9, 6}, S = 14, K = 3 a yes (1 + 2 + 4 = 14)
+
+22.   Write a program, which reads an array of integer numbers from the console and removes a minimal number of elements in such a way that the remaining array is sorted in an increasing order.
+
+Example: {6, 1, 4, 3, 0, 3, 6, 4, 5} a {1, 3, 3, 4, 5}
+
+23.   Write a program, which reads the integer numbers N and K from the console and prints all variations of K elements of the numbers in the interval [1…N]. Example: N = 3, K = 2 a {1, 1}, {1, 2}, {1, 3}, {2, 1}, {2, 2}, {2, 3}, {3, 1}, {3, 2}, {3, 3}.
+
+24.   Write a program, which reads an integer number N from the console and prints all combinations of K elements of numbers in range [1 … N]. Example: N = 5, K = 2 a {1, 2}, {1, 3}, {1, 4}, {1, 5}, {2, 3}, {2, 4}, {2, 5}, {3, 4}, {3, 5}, {4, 5}.
+
+25.   *Write a program, which finds in a given matrix the largest area of equal numbers. We define an area in the matrix as a set of neighbor cells (by row and column). Here is one example with an area containing 13 elements with equal value of 3:
+
+clip_image029[7]
+
+
+
+Solutions and Guidelines
+
+1.    Use an int[] array and a for-loop.
+
+2.    Two arrays are equal if they have the same value for the length and the values for their elements. You can check for the second condition using a for-loop.
+
+3.    In lexicographic order the elements are compared one by one starting from the very left. If the elements are not the same, the array, whose element is smaller (comes earlier in the alphabet), comes first. If the elements are equal, the next character is compared. If the end of one of the arrays is reached, without finding different elements, the shorter array is the smaller (comes earlier lexicographically). If all elements are equal, the arrays are equal.
+
+4.    Scan the array from left to right. Every time when the current number is different from the one before it, a new sequence starts. If the current element is equal to the one before it, it is a continuation of the same sequence. So, if we keep the index of the start position of the current sequence (in the beginning it is 0) in start and the length of the current sequence (in the beginning it is 1) in len, we can find all sequences of equal elements and their lengths. We can easily keep the shortest one in two additional variables – bestStart and bestLen.
+
+5.    This exercise is very similar to the previous one, but we have a continuation of the current sequence when the next element is bigger.
+
+6.    We can solve the problem with two nested loops and one more array len[0…n-1]. In the array len[i] we can keep the length of the longest consecutively increasing sequence, which starts somewhere in the array (it does not matter where exactly) and ends with the element arr[i]. Therefore len[0]=1, len[x] is the maximal sum max(1 + len[prev]), where prev < x and arr[prev] < arr[x]. Following the definition, we can calculate len[0…n-1] with two nested loops: the outer loop will iterate through the array from left to right with the loop variable x. The inner loop will iterate through the array from the start to position x-1 and searches for the element prev with maximal value of len[prev], where arr[prev] < arr[x]. After the search, we initialize len[x] with 1 + the biggest found value of len[prev] or with 1, if such a value is not found.
+
+The described algorithm finds the lengths of all maximal ascending sequences, which end at each of the elements. The biggest one of these values is the length of the longest increasing sequence. If we need to find the elements themselves, which compose that longest sequence, we can start from the element, where the sequence ends (at index x), we can print it and we can search for a previous element (prev). By definition prev < x and len[x] = 1 + len[prev] so we can find prev with a for-loop from 1 to x-1. After that we can repeat the same for x=prev. By finding and printing the previous element (prev) many times until it exists, we can find the elements, which compose the longest sequence in reversed order (from the last to the first).
+
+7.    You can find out which sequence of the sequences of K numbers has the biggest sum by checking the sums of all of those sequences. The first sequence starts at index 0 and finishes at index K-1 and has sum S. Then the second one starts at index 1 and ends at index K and we can find its sum using S by subtracting the element at index 0 and adding the element at index K. In this way we can reach the end of the sequence.
+
+8.    Find in Internet information about "Selection sort" and its C# implementations. Briefly the idea is to find the smallest element and to place it at position 0 (through swapping) then to find the smallest number excluding the first and place it at position 1 and so on, until the entire array is arranged in ascending order.
+
+9.    There are two ways to solve this problem. The first way is to use brute force method, which in this case means that using two nested loops we check every possible start and end and its corresponding sum.
+
+The second way is to use one loop through the array to scan it from left to right and sum the elements. Once we get a negative sum, we can restart summing from the next element. Think why this is correct! At each step we check if the current sum is greater than the current max.
+
+10.   This exercise can be solved in a couple of ways. One of them is the following: get the first number and check how many times it is repeated in the array and store this number in a variable. After a repeated number is found we change its value to int.MinValue. Then pass to the next number and do the same with it. The current number is remembered if its occurrences are maximal. As you may guess, when a number equal to int.MinValue is found (already processed number) we should skip it.
+
+Another solution is to sort the numbers in ascending order and then the elements with same value will be placed next to each other. So, basically we then find the longest sequence of neighbor equal elements.
+
+11.   This exercise can be solved with two nested loops. The first loop assigns a starting index. The second loop sums the elements from the starting index to the right until this partial sum reaches or is greater than S. If the sum is equal to S, we will remember the starting index (from the first loop) and the ending index (from the second loop).
+
+If all numbers are positive, there is a much faster algorithm. We sum all numbers from left to the right, starting from zero. If the current sum becomes greater than S during the summation, we remove the leftmost number in the sequence and we subtract it from the sum. If the current sum is still greater than S, we remove the next leftmost number and do that until the current sum becomes smaller than S. When the sum becomes smaller than S we add the next number on right. If we find a sum equal to S, we print the sum and the sequence to the console. So this solution uses just with one scan through the elements in the array.
+
+12.   a), b), c) Think about appropriate ways for iterating through the matrices with two nested loops.
+
+d) We can start from (0, 0) and go down N times. Therefore, go to the right N-1 times, after that up N-1 times, after that left N-2 times, after that down N-2 times and etc. At each iteration we place the next number in a sequence 1, 2, 3, …, N in the cell, which we are leaving.
+
+13.   Modify the example about maximal platform with size of 2 by 2.
+
+14.   Check every element in a diagonal line, a row and a column until you get a sequence. If you get a sequence, check whether this sequence is longer than the currently longest sequence.
+
+15.   We can solve this problem with two nested for-loops (one for the words and one for the letters of the current word). There is a solution without using an array: we can calculate the index of a given uppercase Latin letter ch using the expression: (int) ch – (int) 'A'.
+
+16.   Find on the Internet information about the algorithm "binary search". Note that binary search works only on sorted arrays.
+
+17.   Find on the Internet information about the algorithm "merge sort" and its implementations in C#. It is a bit complicated to write merge sort efficiently. You can have 3 preallocated arrays when merging arrays: two arrays for keeping the numbers for merging and à result array. Thus you will never allocate new arrays during the algorithm’s execution. The arrays will be allocated just once at the start and you will just change their purpose (swap them) during the algorithm execution.
+
+18.   Find information about the "quick sort" algorithm in Internet and its C# implementations. It can be best implemented by using recursion. See the chapter “Recursion” to read about recursive algorithms. Generally at each step you choose an element called pivot and reorder the array into two sections: at the left side move all elements ? pivot and at the right side move all elements > pivot. Finally run the quicksort algorithm recursively over the left and the right sides.
+
+19.   Find on the Internet information about "The sieve of Erathostenes" (you have probably heard about it in math classes in high-school).
+
+20.   Generate all possible sums this way: take all the numbers and mark them as "possible sum". Then take every number ko, k2, …, kn-1 and for each already marked "possible sum" p, mark as possible the sum p+ki. If at some step you get S, a solution is found. You can keep track of the "possible sums" either in a bool[] array possible[], where each index is a possible sum, or in a more complex data structure like Set<int>. Once you have possible[S] == true, you can find a number ki such that possible[S-ki] == true, print ki and subtract it from S. Repeat the same to find the next ki and print and subtract is again, until S reaches 0.
+
+Another algorithm: generate all possible subsets of the numbers by a for-loop from 0 to 2N-1. If we have a number p, take its binary representation (which consists of exactly N bits) and sum the numbers that correspond to 1 in the binary representation of p (with a nested loop from 0 to N-1). Thus all possible sums will be generated and if some of them is S, it can be printed. Note that this algorithm is slow (needs exponential time and cannot run for 100 or 1000 elements). It also does not allow using the same array element twice in the sum.
+
+21.   See the previous problem. Generate all subsets of exactly K elements (the second algorithm) and check if their sum is equal to S.
+
+Try in the first algorithm to think how to keep the count of the numbers used in the sum in order to take exactly K numbers. Can you define a matrix possible[p, n] to keep whether the number p can be obtained as a sum of the first n numbers (the numbers ko, k2, …, kn-1)?
+
+22.   Use dynamic programming to find the longest increasing sub-sequence in the input sequence arr[], just like in problem #6. The elements not included in the maximal increasing sequence should be removed in order the array to become sorted.
+
+23.   Start from the first variation in the lexicographical order: {1, 1, …} K times. Think of this as k-digit number. To obtain the next variation, increase the last digit. If it becomes greater than N, change it to 1 and increase the next digit on the left. Do the same on the left until the first digit goes greater than N.
+
+24.   Modify the algorithm from the previous problem in the following way: start from {1, 2, …, N} and increase the last digit (with the digits at the left when required), but always keep all elements in the array in ascending order (element p[i] should start increasing from p[i-1]+1).
+
+25.   This is a little bit more difficult. You can use different graph traversal algorithms like "DFS" (Depth-First-Search) and "BFS" (Breadth-First-Search) to go through all the cells in certain area starting from any cell that belongs to it. If you have an area traversal algorithm (like DFS), run it several times starting from unvisited cell and mark the cells of the traversed area as visited. Repeat this until all cells become visited. Read later in this book about DFS and BFS in the chapter “Trees and Graphs” or find information about these algorithms in Internet.
+
+
+Classes and Objects
+
+Over the last few decades programming and informatics have experienced incredible growth and concepts, which have changed the way programs, are built. Object-oriented programming (OOP) introduces such radical idea. We are going to make a short introduction to the principles of OOP and the concepts used in it. Firstly, we are going to explain what classes and objects are. These two terms are basic for OOP and inseparable part from the life of any modern programmer.
+
+What Is Object-Oriented Programming?
+
+Object-oriented programming (OOP) is a programming paradigm, which uses objects and their interactions for building computer programs. Thus an easy to understand, simple model of the subject area is achieved, which gives an opportunity to the programmer to solve intuitively (by simple logic) many of the problems, which occur in the real world.
+
+For now we are not going to get into details what the goals and the advantages of OOP are, as well as explaining in details the principles for building hierarchies of classes and objects. We are going to mention only that programming techniques of OOP often include encapsulation, abstraction, polymorphism and inheritance. These techniques are out of the goals of the current chapter and we are going to consider them later in the chapter "Principles of Object-Oriented Programming". Now we will focus on objects as a basic concept in OOP.
+
+What Is an Object?
+
+We are going to introduce the concept object in the context of OOP. Software objects model real world objects or abstract concepts (which are also regarded as objects).
+
+Examples of real-world objects are people, cars, goods, purchases, etc. abstract objects are concepts in an object area, which we have to model and use in a computer program. Examples of abstract objects are the data structures stack, queue, list and tree. They are not going to be a subject in this chapter, but we are going to see them in details in the next chapters.
+
+In objects from the real world (as well as in the abstract objects) we can distinguish the following two groups of their characteristics:
+
+-     States – these are the characteristics of the object which define it in a way and describe it in general or in a specific moment
+
+-     Behavior – these are the specific distinctive actions, which can be done by the object.
+
+Let’s take for example an object from the real world – "dog". The states of the dog can be "name", "fur color" and "breed", and its behavior – "barking", "sitting" and "walking".
+
+Objects in OOP combine data and the means for their processing in one. They correspond to objects in real world and contain data and actions:
+
+-     Data members – embedded in objects variables, which describe their states.
+
+-     Methods – we have already considered them in details. They are a tool for building the objects.
+
+What Is a Class?
+
+The class defines abstract characteristics of objects. It provides a structure for objects or a pattern which we use to describe the nature of something (some object). Classes are building blocks of OOP and are inseparably related to the objects. Furthermore, each object is an instance of exactly one specific class.
+
+We are going to give as an example a class and an object, which is its instance. We have a class Dog and an object Lassie, which is an instance of the class Dog (we say it is an object of type Dog). The class Dog describes the characteristics of all dogs whereas Lassie is a certain dog.
+
+Classes provide modularity in object-oriented programs. Their characte­ristics have to be meaningful in a common context so that they could be understood by people who are familiar with the problem area and are not programmers. For instance, the class Dog cannot have (or at least should not) a characteristic "RAM" because in the context of this class such characteristic has no meaning.
+
+Classes, Attributes and Behavior
+
+The class defines the characteristics of an object (which we are going to call attributes) and its behavior (actions that can be performed by the object). The attributes of the class are defined as its own variables in its body (called member variables). The behavior of objects is modeled by the definition of methods in classes.
+
+We are going to illustrate the foregoing explanations through an example of a real-world definition of a class. Let’s return to the example with the dog. We would like to define a class Dog that models the real object "dog". The class is going to include characteristics which are common for all dogs (such as breed and fur color), as well as typical for the dog behavior (such are barking, sitting, walking). In this case we are going to have attributes breed and furColor, and the behavior is going to be implemented by the methods Bark(), Sit() and Walk().
+
+Objects – Instances of Classes
+
+From what has been said till now we know that each object is an instance of just one class and is created according to a pattern of this class. Creating the object of a defined class is called instantiation (creation). The instance is the object itself, which is created runtime.
+
+Each object is in instance of a specific class. This instance is characterized by state – set of values, associated with class attributes.
+
+In the context of such behavior the object consists of two things: current state and behavior defined in the class of the object. The state is specific for the instance (the object), but the behavior is common for all objects which are instances of this class.
+
+Classes in C#
+
+So far we have considered several common characteristics of OOP. A great part of the modern programming languages are object-oriented. Each of them has particular features for working with classes and objects. In this book we are going to focus only one of these languages – C#. It is good to know that the knowledge of OOP in C# would be useful to the reader no matter which object-oriented language he uses in practice. That is because OOP is a fundamental concept in programming, used by virtually all modern prog­ramming languages.
+
+What Are Classes in C#?
+
+A class in C# is defined by the keyword class, followed by an identifier (name) of the class and a set of data members and methods in a separate code block.
+
+Classes in C# can contain the following elements:
+
+-     Fields – member-variables from a certain type;
+
+-     Properties – these are a special type of elements, which extend the functionality of the fields by giving the ability of extra data management when extracting and recording it in the class fields. We are going to focus on them in the chapter "Defining Classes";
+
+-     Methods – they implement the manipulation of the data.
+
+An Example Class
+
+We are going to give an example of a class in C#, which contains the listed elements. The class Cat models the real-world object "cat" and has the properties name and color. The given class defines several fields, properties and methods, which we are going to use later. You can now see the definition of the class (we are not going to consider in details the definition of the classes – we are going to focus on that in the chapter "Defining Classes"):
+
+public class Cat
+
+{
+
+    // Field name
+
+    private string name;
+
+    // Field color
+
+    private string color;
+
+ 
+
+    public string Name
+
+    {
+
+        // Getter of the property "Name"
+
+        get
+
+        {
+
+            return this.name;
+
+        }
+
+        // Setter of the property "Name"
+
+        set
+
+        {
+
+            this.name = value;
+
+        }
+
+    }
+
+ 
+
+    public string Color
+
+    {
+
+        // Getter of the property "Color"
+
+        get
+
+        {
+
+            return this.color;
+
+        }
+
+        // Setter of the property "Color"
+
+        set
+
+        {
+
+            this.color = value;
+
+        }
+
+    }
+
+ 
+
+    // Default constructor
+
+    public Cat()
+
+    {
+
+        this.name = "Unnamed";
+
+        this.color = "gray";
+
+    }
+
+ 
+
+    // Constructor with parameters
+
+    public Cat(string name, string color)
+
+    {
+
+        this.name = name;
+
+        this.color = color;
+
+    }
+
+ 
+
+    // Method SayMiau
+
+    public void SayMiau()
+
+    {
+
+        Console.WriteLine("Cat {0} said: Miauuuuuu!", name);
+
+    }
+
+}
+
+The example class Cat defines the properties Name and Color, which keep their values in the hidden (private) fields name and color. Furthermore, two constructors are defined for creating instances of the class Cat, respectively with and without parameters, and a method of the class SayMiau().
+
+After the example class is defined we can now use it in the following way:
+
+static void Main()
+
+{
+
+    Cat firstCat = new Cat();
+
+    firstCat.Name = "Tony";
+
+    firstCat.SayMiau();
+
+ 
+
+    Cat secondCat = new Cat("Pepy", "red");
+
+    secondCat.SayMiau();
+
+    Console.WriteLine("Cat {0} is {1}.",
+
+        secondCat.Name, secondCat.Color);
+
+}
+
+If we execute the example, we are going to get the following output:
+
+Cat Tony said: Miauuuuuu!
+
+Cat Pepy said: Miauuuuuu!
+
+Cat Pepy is Red.
+
+We saw a simple example for defining and using classes, and in the section "Creating and Using Objects" we are going to explain in details how to create objects, how to access their properties and how to call their methods and this is going to allow us to understand how this example works.
+
+System Classes
+
+Calling the method Console.WriteLine(…) of the class System.Console is an example of usage of a system class in C#. We call system classes the classes defined in standard libraries for building applications with C# (or another programming language). They can be used in all our .NET applications (in particular those written in C#). Such are for example the classes String, Environment and Math, which we are going to consider later.
+
+As we already know from chapter "Introduction to Programming" the .NET Framework SDK comes with a set of programming languages (like C# and VB.NET), compilers and standard class library which provides thousands of system classes for accomplishing the most common tasks in programming like console-based input / output, text processing, collection classes, parallel execution, networking, database access, data processing, as well as creating Web-based, GUI and mobile applications.
+
+It is important to know that the implementation of the logic in classes is encapsulated (hidden) inside them. For the programmer it is important what they do, not how they do it and for this reason a great part of the classes is not publicly available (public). With system classes the implementation is often not available at all to the programmer. Thus, new layers of abstraction are created which is one of the basic principles in OOP.
+
+We are going to pay special attention to system classes later. Now it is time to get familiar with creating and using objects in programs.
+
+Creating and Using Objects
+
+For now we are going to focus on creating and using objects in our programs. We are going to work with already defined classes and mostly with system classes from .NET Framework. The specificities of defining our own classes we are going to consider later in the chapter "Defining Classes".
+
+Creating and Releasing Objects
+
+The creation of objects from preliminarily defined classes during program execution is performed by the operator new. The newly created object is usually assigned to the variable from type coinciding with the class of the object (this, however, is not mandatory – read chapter "Principles of Object-Oriented Programming"). We are going to note that in this assignment the object is not copied, and only a reference to the newly created object is recorded in the variable (its address in the memory). Here is a simple example of how it works:
+
+Cat someCat = new Cat();
+
+The variable someCat of type Cat we assign the newly created instance of the class Cat. The variable someCat remains in the stack, and its value (the instance of the class Cat) remains in the managed heap:
+
+clip_image002[19]
+
+Creating Objects with Set Parameters
+
+Now we are going to consider a slightly different variant of the example above in which we set parameters when creating the object:
+
+Cat someCat = new Cat("Johnny", "brown");
+
+In this case we would like the objects someCat to represent a cat whose name is "Johnny" and is brown. We indicate this by using the words "Johnny" and "brown", written in the brackets after the name of the class.
+
+When creating an object with the operator new, two things happen: memory is set aside for this object and its data members are initialized. The initialization is performed by a special method called constructor. In the example above the initializing parameters are actually parameters of the constructor of the class.
+
+We are going to discuss constructors after a while. As the member variables name and color of the class Cat are of reference type (of the class String), they are also recorded in the dynamic memory (heap) and in the object itself are kept their references (addresses / pointers).
+
+The following figure illustrates how the Cat object is represented in the computer memory (arrows illustrated the references from one object to another):
+
+clip_image004[12]
+
+Releasing the Objects
+
+An important feature of working with objects in C# is that usually there is no need to manually destroy them and release the memory taken up by them. This is possible because of the embedded in .NET CLR system for cleaning the memory (garbage collector) which takes care of releasing unused objects instead of us. Objects to which there is no reference in the program at certain moment are automatically released and the memory they take up is released. This way many potential bugs and problems are prevented. If we would like to manually release a certain object, we have to destroy the reference to it, for example this way:
+
+someCat = null;
+
+This does not destroy the object immediately, but puts it in a state in which it is inaccessible to the program and the next time the garbage collector cleans the memory it is going to be released:
+
+clip_image006[11]
+
+Access to Fields of an Object
+
+The access to the fields and properties of a given object is done by the operator . (dot) placed between the names of the object and the name of the field (or the property). The operator . is not necessary in case we access field or property of given class in the body of a method of the same class.
+
+We can access the fields and the properties either to extract data from them, or to assign new data. In the case of a property the access is implemented in exactly the same way as in the case of a field – C# give us this ability. This is achieved by the keywords get and set in the definition of the property, which perform respectively extraction of the value of the property and assignment of a new value. In the definition of the class Cat (given above) the properties are Name and Color.
+
+Access to the Memory and Properties of an Object – Example
+
+We are going to give an example of using a property of an object, as well as using the already defined above class Cat. We create an instance myCat of the class Cat and assign "Alfred" to the property Name. After that we print on the standard output a formatted string with the name of our cat. You can see an implementation of the example:
+
+class CatManipulating
+
+{
+
+    static void Main()
+
+    {
+
+        Cat myCat = new Cat();
+
+        myCat.Name = "Alfred";
+
+ 
+
+        Console.WriteLine("The name of my cat is {0}.",
+
+            myCat.Name);
+
+    }
+
+}
+
+Calling Methods of Objects
+
+Calling the methods of a given object is done through the invocation operator () and with the help of the operator . (dot). The operator dot is not obligatory only in case the method is called in the body of another method of the same class. Calling a method is performed by its name followed by () or (<parameters>) for the case when we pass it some arguments. We already know how to invoke methods from the chapter "Methods".
+
+Now is the moment to mention the fact that methods of classes have access modifiers public, private or protected with which the ability to call them could be restricted. We are going to consider these modifiers in the chapter "Defining Classes". For now it enough to know that the access modifier public does not introduce any restrictions for calling the method, i.e. makes it publicly available.
+
+Calling Methods of Objects – Example
+
+We are going to complement the example we already gave as we call the method SayMiau of the class Cat. Here is the result:
+
+class CatManipulating
+
+{
+
+    static void Main()
+
+    {
+
+        Cat myCat = new Cat();
+
+        myCat.Name = "Alfred";
+
+ 
+
+        Console.WriteLine("The name of my cat is {0}.",myCat.Name);
+
+        myCat.SayMiau();
+
+    }
+
+}
+
+After executing the program above the following text is going to be printed on the standard output:
+
+The name of my cat is Alfred.
+
+Cat Alfred said: Miauuuuuu!
+
+Constructors
+
+The constructor is a special method of the class, which is called automatically when creating an object of this class, and performs initialization of its data (this is its purpose). The constructor has no type of returned value and its name is not random, and mandatorily coincides with the class name. The constructor can be with or without parameters. A constructor without parameters is also called parameterless constructor.
+
+Constructor with Parameters
+
+The constructor can take parameters as well as any other method. Each class can have different count of constructors with one only restriction – the count and type of their parameters have to be different (different signature). When creating an object of this class, one of the constructors is called.
+
+In the presence of several constructors in a class naturally occurs the question which of them is called when the object is created. This problem is solved in a very intuitive way as with methods. The appropriate constructor is chosen automatically by the compiler according to the given set of parameters when creating the object. We use the principle of the best match.
+
+Calling Constructors – Example
+
+Lets' take a look again at the definition of the class Cat and more particularly at the two constructors of the class:
+
+public class Cat
+
+{
+
+    // Field name
+
+    private string name;
+
+    // Field color
+
+    private string color;
+
+ 
+
+    …
+
+ 
+
+    // Parameterless constructor
+
+    public Cat()
+
+    {
+
+        this.name = "Unnamed";
+
+        this.color = "gray";
+
+    }
+
+ 
+
+    // Constructor with parameters
+
+    public Cat(string name, string color)
+
+    {
+
+        this.name = name;
+
+        this.color = color;
+
+    }
+
+ 
+
+    …
+
+}
+
+We are going to use these constructors to illustrate the usage of constructors with and without parameters. For the class Cat defined that way we are going to give an example of creating its instances by each of the two constructors. One of the objects is going to be an ordinary undefined cat, and the other – our brown cat Johnny. After that we are going to execute the method SayMiau for each of the cats and analyze the result. Source code follows:
+
+class CatManipulating
+
+{
+
+    static void Main()
+
+    {
+
+        Cat someCat = new Cat();
+
+ 
+
+        someCat.SayMiau();
+
+        Console.WriteLine("The color of cat {0} is {1}.",
+
+            someCat.Name, someCat.Color);
+
+ 
+
+        Cat someCat = new Cat("Johnny", "brown");
+
+ 
+
+        someCat.SayMiau();
+
+        Console.WriteLine("The color of cat {0} is {1}.",
+
+            someCat.Name, someCat.Color);
+
+    }
+
+}
+
+As a result of the program’s execution the following text is printed on the standard output:
+
+Cat Unnamed said: Miauuuuuu!
+
+The color of cat Unnamed is gray.
+
+Cat Johnny said: Miauuuuuu!
+
+The color of cat Johnny is brown.
+
+Static Fields and Methods
+
+The data members, which we considered up until, now implement states of the objects and are directly related to specific instances of the classes. In OOP there are special categories fields and methods, which are associated with the data type (class), and not with the specific instance (object). We call them static members because are independent of concrete objects. Furthermore, they are used without the need of creating an instance of the class in which they are defined. They can be fields, methods and constructors. Let’s consider shortly static members in C#.
+
+A static field or method in a given class is defined with the keyword static, placed before the type of the field or the type of returned value of the method. When defining a static constructor, the word static is placed before the name of the constructor. Static constructors are not going to be discussed in this chapter – for now we are going to consider only static fields and methods (the more curious readers can look up in MSDN).
+
+When to Use Static Fields and Methods?
+
+To find the answers of this question we have to understand very well the difference between static and non-static members. We are going to consider into details what it is.
+
+We have already explained the main difference between the two types of members. Let’s interpret the class as a category of objects, and the object as a representative of this category. Then the static members reflect the state and the behavior of the category itself, and the non-static the state and the behavior of the separate representatives of the category.
+
+Now we are going to pay special attention to the initialization of static and non-static fields. We already know that non-static fields are initialized with the call to the constructor of the class when creating an instance of it – either inside the body of the constructor, or outside. However, the initialization of static fields cannot be performed when the object of the class is created, because they can be used without a created instance of the class. It is important to know the following:
+
+clip_image007[17]
+
+Static fields are initialized when the data type (the class) is used for the first time, during the execution of the program.
+
+Now we shall see how to use static fields and methods in practice.
+
+Static Fields and Methods – Example
+
+The example, which we are going to give, solves the following simple problem: we need a method that every time returns a value greater with one than the value returned at the previous call of the method. We choose the first returned value to be 0. Obviously this method generates the sequence of natural number. Similar functionality is widely used in practice, for example, for uniform numbering of objects. Now we are going to see how this could be implemented with the means of OOP.
+
+Let’s assume that the method is called NextValue() and is defined in a class called Sequence. The class has a field currentValue from type int, which contains the last returned value by the method. We would like the following two actions to be performed consecutively in the method body: the value of the field to be increased and its new value to be returned as a result. Obviously the returned by the method value does not depend on the concrete instance of the class Sequence. For this reason the method and the field are static. You can now see the described implementation of the class:
+
+public class Sequence
+
+{
+
+    // Static field, holding the current sequence value
+
+    private static int currentValue = 0;
+
+ 
+
+    // Intentionally deny instantiation of this class
+
+    private Sequence()
+
+    {
+
+    }
+
+ 
+
+    // Static method for taking the next sequence value
+
+    public static int NextValue()
+
+    {
+
+        currentValue++;
+
+        return currentValue;
+
+    }
+
+}
+
+The observant reader has noticed that the so defined class has a default constructor, which is declared as private. This usage of a constructor may seem strange, but is quite deliberate. It is good to know the following:
+
+clip_image007[18]
+
+A class that has only private constructors cannot be instantiated. Such class usually has only static members and is called "utility class".
+
+For now we are not going to go into details about the access modifiers public, private and protected. We shall explain them comprehensively in the chapter "Defining Classes".
+
+Let’s take a look at a simple program, which uses the class Sequence:
+
+class SequenceManipulating
+
+{
+
+    static void Main()
+
+    {
+
+        Console.WriteLine("Sequence[1...3]: {0}, {1}, {2}",
+
+            Sequence.NextValue(), Sequence.NextValue(),
+
+            Sequence.NextValue());
+
+    }
+
+}
+
+The example prints on the standard output the first three natural numbers by triple consecutive call of the method NextValue() of the class Sequence. The result from this code is the following:
+
+Sequence[1...3]: 1, 2, 3
+
+If we try to create several different sequences, as the constructor of the class Sequence is declared private, we are going to get compile time error.
+
+Examples of System C# Classes
+
+After we got acquainted with the basic functionality of objects, we are going to consider briefly several commonly used system classes from the standard library of .NET Framework. This way we are going to see in practice the so far explained material, and also show how system classes ease our every-day work.
+
+The System.Environment Class
+
+We start with one of the basic system classes in .NET Framework: System.Environment. It contains a set of useful fields and methods, which ease getting information about the hardware and the operating system, and some of them, give the ability to interact with the program environment. Here is a part of the functionality provided by this class:
+
+-     Information about the processors count, the computer network name, the version of the operating system, the name of the current user, the current directory, etc.
+
+-     Access to externally defined properties and environment variables, which we are not going to consider in this book.
+
+Now we are going to show one interesting application of a method of the class Environment, which is commonly used in practice when developing programs with critical fast performance. We are going to detect the time needed for the execution of the source code with the help of the property TickCount. Here it is how it works:
+
+class SystemTest
+
+{
+
+    static void Main()
+
+    {
+
+        int sum = 0;
+
+        int startTime = Environment.TickCount;
+
+ 
+
+        // The code fragment to be tested
+
+        for (int i = 0; i < 10000000; i++)
+
+        {
+
+            sum++;
+
+        }
+
+ 
+
+        int endTime = Environment.TickCount;
+
+        Console.WriteLine("The time elapsed is {0} sec.",
+
+            (endTime - startTime) / 1000.0);
+
+    }
+
+}
+
+The static property TickCount of the class Environment returns as a result the count of milliseconds that have passed since the computer is on until the time of the method call. With its help we detect the milliseconds past before and after the execution of the source code. Their difference is the wanted time for the execution of the fragment source code measured in milliseconds.
+
+As a result of the execution of the program on the standard output we print the result of the following type (the measured time varies according to the current computer configuration and its load):
+
+The time elapsed is 0.031 sec.
+
+In the example we have used two static members of two system classes: the static property Environment.TickCount and the static method Console.
+WriteLine(…).
+
+The System.String Class
+
+We have already met the String (System.String) class of .NET Framework, which represents strings. Let’s recall that we can think of strings as a primitive data type in C#, although the work with them is different from the work with different primitive data types (integers, floating point numbers, Boolean variables, etc.). We are going to describe them in details in the chapter "Strings and Text Processing".
+
+The System.Math Class
+
+The System.Math class contains methods for performing basic numeric and mathematical operations such as raising a number to a power, taking a logarithm and square root, and some trigonometric functions. We are going to give a simple example, which illustrates its usage.
+
+We want to make a program, which calculates the area of a triangle by given two sides and an angle between them in degrees. Therefore we need the method Sin(…) and the constant PI of the class Math. With the help of the ? number we can easily convert to radians the entered in degrees angle. You can see an example implementation of the described logic:
+
+class MathTest
+
+{
+
+    static void Main()
+
+    {
+
+        Console.WriteLine("Length of the first side:");
+
+        double a = double.Parse(Console.ReadLine());
+
+        Console.WriteLine("Length of the second side:");
+
+        double b = double.Parse(Console.ReadLine());
+
+        Console.WriteLine("Size of the angle in degrees:");
+
+        int angle = int.Parse(Console.ReadLine());
+
+ 
+
+        double angleInRadians = Math.PI * angle / 180.0;
+
+        Console.WriteLine("Area of the triangle: {0}",
+
+            0.5 * a * b * Math.Sin(angleInRadians));
+
+    }
+
+}
+
+We can easily test the program if we check whether it calculates correctly the area of an equilateral triangle. For further convenience we choose the length of the side to be 2 – then we find the area with the well-known formula:
+
+clip_image009[14]
+
+We enter consecutively the numbers 2, 2, 60 and on the standard output we can see:
+
+Face of the triangle: 1.73205080756888
+
+Depending on your system localization (Region and Language Settings) your output might be "1,73205080756888" or "1.73205080756888". You might fix the decimal point to "." by this line of code, executed at your program start:
+
+System.Threading.Thread.CurrentThread.CurrentCulture =
+
+    System.Globalization.CultureInfo.InvariantCulture;
+
+The System.Math Class – More Examples
+
+As we already saw, apart from mathematical methods, the Math class also defines two well known in mathematics constants: the trigonometric constant ? and the Euler’s number e. Here is an example with them:
+
+Console.WriteLine(Math.PI);
+
+Console.WriteLine(Math.E);
+
+When executing the code above, we get the following output:
+
+3.141592653589793
+
+2.718281828459045
+
+The System.Random Class
+
+Sometimes in programming we have to use random numbers. For instance, we would like to generate 6 random numbers in the range 1 to 49 (not necessarily unequal). This could be done by using the System.Random class and its method Next(). Before we use the Random class we have to create instance of it, at which point it is initialized with a random value (derived from the current system time in the operating system). After that we can randomly generate a number in the range [0…n) by calling the method Next(n). Notice that this method can return zero, but always returns a random number smaller than the set value n. Therefore, if we would like to get a number in the range [1…49], we have to use the expression Next(49) + 1.
+
+Below is an example source code of a program, which generates 6 random numbers in the range from 1 to 49 by using the Random class (note that it is not guaranteed that the numbers are unique like in the classical Bulgarian lottery TOTO 6/49):
+
+class RandomNumbersBetween1And49
+
+{
+
+    static void Main()
+
+    {
+
+        Random rand = new Random();
+
+        for (int number = 1; number <= 6; number++)
+
+        {
+
+            int randomNumber = rand.Next(49) + 1;
+
+            Console.Write("{0} ", randomNumber);
+
+        }
+
+    }
+
+}
+
+Here is how a possible output of the program looks like:
+
+16 49 7 29 1 28
+
+The System.Random Class – Generating a Random Password
+
+To show you how useful the random numbers generator in .NET Framework can be, we are going to set as a task to generate a random password which is between 8 and 15 characters long, contains at least two capital letters, at least two small letters, at least one digit and at least three special chars. For this purpose we are going to use the following algorithm:
+
+1.  We start with an empty password. We create a generator of random numbers.
+
+2.  We generate twice a random capital letter and place it at a random position in the password.
+
+3.  We generate twice a random small letter and place it at a random position in the password.
+
+4.  We generate twice a random digit and place it at a random position in the password.
+
+5.  We generate three times a random special character and place it at a random position in the password.
+
+6.  Until this moment the password should consist of 8 characters. In order to supplement it to 15 characters at most, we can insert random count of times (between 0 and 7) at a random position in the password a random character (a capital letter, a small letter or a special char).
+
+An implementation of the described algorithm is given below:
+
+class RandomPasswordGenerator
+
+{
+
+    private const string CapitalLetters =
+
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private const string SmallLetters =
+
+        "abcdefghijklmnopqrstuvwxyz";
+
+    private const string Digits = "0123456789";
+
+    private const string SpecialChars =
+
+        "~!@#$%^&*()_+=`{}[]\\|':;.,/?<>";
+
+    private const string AllChars =
+
+        CapitalLetters + SmallLetters + Digits + SpecialChars;
+
+ 
+
+    private static Random rnd = new Random();
+
+ 
+
+    static void Main()
+
+    {
+
+        StringBuilder password = new StringBuilder();
+
+ 
+
+        // Generate two random capital letters
+
+        for (int i = 1; i <= 2; i++)
+
+        {
+
+            char capitalLetter = GenerateChar(CapitalLetters);
+
+            InsertAtRandomPosition(password, capitalLetter);
+
+        }
+
+ 
+
+        // Generate two random small letters
+
+        for (int i = 1; i <= 2; i++)
+
+        {
+
+            char smallLetter = GenerateChar(SmallLetters);
+
+            InsertAtRandomPosition(password, smallLetter);
+
+        }
+
+ 
+
+        // Generate one random digit
+
+        char digit = GenerateChar(Digits);
+
+        InsertAtRandomPosition(password, digit);
+
+ 
+
+        // Generate 3 special characters
+
+        for (int i = 1; i <= 3; i++)
+
+        {
+
+            char specialChar = GenerateChar(SpecialChars);
+
+            InsertAtRandomPosition(password, specialChar);
+
+        }
+
+ 
+
+        // Generate few random characters (between 0 and 7)
+
+        int count = rnd.Next(8);
+
+        for (int i = 1; i <= count; i++)
+
+        {
+
+            char specialChar = GenerateChar(AllChars);
+
+            InsertAtRandomPosition(password, specialChar);
+
+        }
+
+ 
+
+        Console.WriteLine(password);
+
+    }
+
+ 
+
+    private static void InsertAtRandomPosition(
+
+        StringBuilder password, char character)
+
+    {
+
+        int randomPosition = rnd.Next(password.Length + 1);
+
+        password.Insert(randomPosition, character);
+
+    }
+
+ 
+
+    private static char GenerateChar(string availableChars)
+
+    {
+
+        int randomIndex = rnd.Next(availableChars.Length);
+
+        char randomChar = availableChars[randomIndex];
+
+        return randomChar;
+
+    }
+
+}
+
+Let’s explain several unclear moments in the source code. Let’s start from the definition of the constants:
+
+private const string CapitalLetters =
+
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+private const string SmallLetters =
+
+    "abcdefghijklmnopqrstuvwxyz";
+
+private const string Digits = "0123456789";
+
+private const string SpecialChars =
+
+    "~!@#$%^&*()_+=`{}[]\\|':;.,/?<>";
+
+private const string AllChars =
+
+    CapitalLetters + SmallLetters + Digits + SpecialChars;   
+
+Constants in C# are immutable variables whose values are assigned during their initialization in the source code of the program and after that they cannot be changed. They are declared with the modifier const. They are used for defining a number or a string, which afterwards is used many times in the program. This way repetition of certain values in the code is avoided and these values can be easily altered by changing only one place in the code. For example, if in a certain moment we decide that the character "," (comma) should not be used when generating a password, we can change only one row in the program (the corresponding constant) and the change is going to reflect on every row where the constant is being used. In C# constants are written in Pascal Case (the words in the name, merged together, each of them starts with an uppercase letter, and the rest of them are lowercase). More about constants we will learn in the section "Constants" in the chapter "Defining Classes".
+
+Let’s explain how the other parts of the program work. In the beginning, as a static member variable in the class RandomPasswordGenerator is created the random number generator rnd. As this variable rnd is defined in the class (not in the Main() method), it is accessible by the whole class (by each of its methods), and as it is defined static, it is accessible by the static methods, too. Thus, anywhere the program needs a random integer variable the same random number generator is used. It is initialized when the class RandomPasswordGenerator is loaded.
+
+The method GenerateChar() returns a randomly chosen character in a set of characters given as a parameter. It works very simply: it chooses a random position in the set of characters (between 0 and the count of characters minus 1) and returns the characters at this position.
+
+The method InsertAtRandomPosition() is not complicated too. It chooses a random position in the StringBuilder object, which is passed and inserts on this position the returned character. We are going to pay special attention to the class StringBuilder in the chapter "Strings and Text Processing".
+
+Here is a sample output of the program for generating passwords, which we just considered (this output is different at each program run due to its randomness by nature):
+
+8p#Rv*yTl{tN4
+
+Namespaces
+
+Namespace (package) in OOP we call a container for a group of classes, which are united by a common feature or are used in a common context. The namespaces contribute to a better logical organization of the source code by creating a semantic division of the classes in categories and makes easier their usage in the source code. Now we are going to consider namespaces in C# and are going to see how we can use them.
+
+What Are Namespaces in C#?
+
+Namespaces in C# are named groups of classes, which are logically related without any specific requirement on how to be placed in the file system. However, it is considered that the folder name should match the namespace name and the names of the files should match the names of the classes, which are defined in them. We have to note that in some programming languages the compilation of the source code in a given namespace depends on the distribution of the elements of the namespace in folders and files on the disk. In Java, for instance, the described file organization is mandatory (if it is not followed, compilation errors occur). C# is not so strict regarding this.
+
+Now, let’s consider the mechanism for defining namespaces.
+
+Defining Namespaces
+
+In case we like to create a new namespace or a new class which belongs to a given namespace, in Visual Studio this happens automatically by the commands in the context menu of the Solution Explorer (on right click on the corresponding folder). By default the Solution Explorer is visualized like a Dock in the right part of the integrated environment. We are going to illustrate how we could add a new class in the already existing namespace MyNamespace by the context menu of Solution Explorer in Visual Studio:
+
+clip_image011[14]
+
+As the project is called MyConsoleApplication and we are adding in its folder MyNamespace, the newly created class is going to be in the following namespace:
+
+namespace MyConsoleApplication.MyNamespace
+
+If we have defined a class in its own file and we like to add it in a new or already existing namespace, it is not hard to do it manually. It is enough to change the named block with a keyword namespace in the class:
+
+namespace <namespace_name>
+
+{
+
+    …
+
+}
+
+In the definition we use the keyword namespace, followed by the full name of the namespace. It is considered that the namespaces in C# start with a capital letter and are written in Pascal Case. For example, if we have to make a namespace containing classes for string processing, it is desirable we name it StringUtils, and not string_utils.
+
+Nested Namespaces
+
+Except classes, namespaces can contain other namespaces in themselves (nested namespaces). This way, intuitively we create a hierarchy of namespaces, which allows even more precise distribution of classes according to their semantics.
+
+When naming namespaces in the hierarchy we use the character . as a separator (dot notation). For example, the namespace System from .NET Framework contains in itself the sub-namespace Collections and thus the full name of the nested namespace Collections is System.Collections.
+
+Full Names of Classes
+
+In order to absolutely understand the meaning of namespaces, it is important for us to know the following:
+
+clip_image007[19]
+
+Classes are required to have unique names only within the namespaces, in which they are defined.
+
+Outside a given namespace we can have classes with random names regardless of whether they match with any of the names of classes in the namespace. This is because classes in the namespace are uniquely defined in its context. It is time to see how to define syntactically this uniqueness.
+
+Full name of the class we call the first name of the class, preceded by the name of the namespace in which it is defined. The full name of each class is unique. Again we use dot notation:
+
+<namespace_name>.<class_name>
+
+Let’s take, for example, the system class CultureInfo, defined in the namespace System.Globalization (we have already used it in the chapter "Console Input and Output"). According to the definition, the full name of the class is System.Globalization.CultureInfo.
+
+In .NET Framework sometimes there are classes from different namespaces with matching names, for example:
+
+System.Windows.Forms.Control
+
+System.Web.UI.Control
+
+System.Windows.Controls.Control
+
+Inclusion of a Namespace
+
+When building an application according to the object area, very often it is necessary to use the classes of a namespace multiple times. For the programmer’s convenience there is a mechanism for inclusion of a namespace in the current file with a source code. After the given namespace is included, all classes defined in it may be used without the need to use their full names.
+
+The inclusion of a namespace in the current source code file is executed with the keyword using in the following way:
+
+using <namespace_name>;
+
+We are going to pay attention to an important feature of including namespaces in the described way. All classes defined directly in the namespace <namespace_name> are included and can be used, but we have to know the following:
+
+clip_image007[20]
+
+Inclusion of namespaces is not recursive, i.e. when including a namespace the classes from the nested namespaces are not included.
+
+For example, the inclusion of namespaces System.Collections does not automatically include the classes from its nested namespace System.
+Collections.Generic. When used, either we have to apply their full names, or to include the namespace, which contains them.
+
+Using a Namespace – Example
+
+In order to illustrate the principle of inclusion of a namespace, we are going to consider the following program which reads numbers, saves them in lists and counts how many of them are integer numbers and how many are double:
+
+class NamespaceImportTest
+
+{
+
+    static void Main()
+
+    {
+
+        System.Collections.Generic.List<int> ints =
+
+            new System.Collections.Generic.List<int>();
+
+        System.Collections.Generic.List<double> doubles =
+
+            new System.Collections.Generic.List<double>();
+
+ 
+
+        while (true)
+
+        {
+
+            int intResult;
+
+            double doubleResult;
+
+            Console.WriteLine("Enter an int or a double:");
+
+            string input = Console.ReadLine();
+
+ 
+
+            if (int.TryParse(input, out intResult))
+
+            {
+
+                ints.Add(intResult);
+
+            }
+
+            else if (double.TryParse(input, out doubleResult))
+
+            {
+
+                doubles.Add(doubleResult);
+
+            }
+
+            else
+
+            {
+
+                break;
+
+            }
+
+        }
+
+ 
+
+        Console.Write("You entered {0} ints:", ints.Count);
+
+        foreach (var i in ints)
+
+        {
+
+            Console.Write(" " + i);
+
+        }
+
+        Console.WriteLine();
+
+ 
+
+        Console.Write("You entered {0} doubles:", doubles.Count);
+
+        foreach (var d in doubles)
+
+        {
+
+            Console.Write(" " + d);
+
+        }
+
+        Console.WriteLine();
+
+    }
+
+}
+
+For this purpose the program uses the class System.Collections.
+Generic.List as it calls it by its full name.
+
+Let’s see how the program above works: we enter consecutively the values 4, 1.53, 0.26, 7, 2, end. We get the following result on the standard output:
+
+You entered 3 ints: 4 7 2
+
+You entered 2 doubles: 1.53 0.26
+
+The program does the following: it gives the user the opportunity to enter consecutively numbers, which may be integer or double. This continues until the moment in which a value different from a number is entered. Then on the standard output two rows are displayed, respectively with integer and double numbers.
+
+For the implementation of the described actions we use two helping objects respectively of type System.Collections.Generic.List<int> and System.
+Collections.Generic.List<double>. Obviously, the full names of the classes make the code unreadable, and cause inconveniences. We can easily avoid this effect by including the namespace System.Collections.Generic and use directly the classes by name. You can now see the shortened version of the program above:
+
+using System.Collections.Generic;
+
+ 
+
+class NamespaceImportTest
+
+{
+
+    static void Main()
+
+    {
+
+        List<int> ints = new List<int>();
+
+        List<double> doubles = new List<double>();
+
+        …
+
+    }
+
+}
+
+Exercises
+
+1.    Write a program, which reads from the console a year and checks if it is a leap year.
+
+2.    Write a program, which generates and prints on the console 10 random numbers in the range [100, 200].
+
+3.    Write a program, which prints, on the console which day of the week is today.
+
+4.    Write a program, which prints on the standard output the count of days, hours, and minutes, which have passes since the computer is started until the moment of the program execution. For the implementation use the class Environment.
+
+5.    Write a program which by given two sides finds the hypotenuse of a right triangle. Implement entering of the lengths of the sides from the standard input, and for the calculation of the hypotenuse use methods of the class Math.
+
+6.    Write a program which calculates the area of a triangle with the following given:
+
+-     three sides;
+
+-     side and the altitude to it;
+
+-     two sides and the angle between them in degrees.
+
+7.    Define your own namespace CreatingAndUsingObjects and place in it two classes Cat and Sequence, which we used in the examples of the current chapter. Define one more namespace and make a class, which calls the classes Cat and Sequence, in it.
+
+8.    Write a program which creates 10 objects of type Cat, gives them names CatN, where N is a unique serial number of the object, and in the end call the method SayMiau() for each of them. For the implementation use the namespace CreatingAndUsingObjects.
+
+9.    Write a program, which calculates the count of workdays between the current date and another given date after the current (inclusive). Consider that workdays are all days from Monday to Friday, which are not public holidays, except when Saturday is a working day. The program should keep a list of predefined public holidays, as well as a list of predefined working Saturdays.
+
+10.   You are given a sequence of positive integer numbers given as string of numbers separated by a space. Write a program, which calculates their sum. Example: "43 68 9 23 318" a 461.
+
+11.   Write a program, which generates a random advertising message for some product. The message has to consist of laudatory phrase, followed by a laudatory story, followed by author (first and last name) and city, which are selected from predefined lists. For example, let’s have the following lists:
+
+-     Laudatory phrases: {"The product is excellent.", "This is a great product.", "I use this product constantly.", "This is the best product from this category."}.
+
+-     Laudatory stories: {"Now I feel better.", "I managed to change.", "It made some miracle.", "I can’t believe it, but now I am feeling great.", "You should try it, too. I am very satisfied."}.
+
+-     First name of the author: {"Dayan", "Stella", "Hellen", "Kate"}.
+
+-     Last name of the author: {"Johnson", "Peterson", "Charls"}.
+
+-     Cities: {"London", "Paris", "Berlin", "New York", "Madrid"}.
+
+Then the program would print randomly generated advertising message like the following:
+
+I use this product constantly. You should try it, too. I am very satisfied. -- Hellen Peterson, Berlin
+
+12.   * Write a program, which calculates the value of a given numeral expression given as a string. The numeral expression consists of:
+
+-     real numbers, for example 5, 18.33, 3.14159, 12.6;
+
+-     arithmetic operations: +, -, *, / (with their standard priorities);
+
+-     mathematical functions: ln(x), sqrt(x), pow(x, y);
+
+-     brackets for changing the priorities of the operations: ( and ).
+
+Note that the numeral expressions have priorities, for example the expression -1 + 2 + 3 * 4 - 0.5 = (-1) + 2 + (3 * 4) - 0.5 = 12.5.
+
+Solutions and Guidelines
+
+1.    Use DateTime.IsLeapYear(year).
+
+2.    Use the class Random. You may generate random numbers in the range [100, 200] by calling Random.Next(100, 201).
+
+3.    Use DateTime.Today.DayOfWeek.
+
+4.    Use the property Environment.TickCount, in order to get the count of passed milliseconds. Use the fact that one second has 1,000 milliseconds; one minute has 60 seconds; one hour has 60 minutes and one day has 24 hours.
+
+5.    The hypotenuse of a rectangular triangle could be found with the Pythagorean Theorem a2 + b2 = c2, where a and b are the two sides, and c is the hypotenuse. Take square root of the two sides of the equation in order to get the length of the hypotenuse. Use the Sqrt(…) methods of the Math class.
+
+6.    For the first sub-problem of the task use the Heron’s Formula clip_image013[12], where clip_image015[10]. For the second sub-problem use the formula: clip_image017[8]. For the third sub-problem use the formula: clip_image019[8]. For the sine use the System.Math class.
+
+7.    Make a new project in Visual Studio, right click on the folder and choose the menu Add a New Folder. Then enter the name of the folder and press [Enter], right click on the newly made folder and choose Add a New Item… from the list choose Class, for the name of the new class enter Cat and press [Add]. Change the definition of the newly created class with the definition, which we gave to this chapter, to put the classes in a namespace. Make the same to the class Sequence.
+
+8.    Create an array with 10 elements of type Cat. Create 10 objects of type Cat in a loop (use a constructor with parameters) and assign them to the corresponding element of the array. For the serial number of the objects use the method NextValue() of the Sequence class. In the end again in an array use the method SayMiau() for each of the array elements.
+
+9.    Use the class System.DateTime and the methods in it. You can execute a loop from the current date (DateTime.Now.Date) to the end date, consecutively incrementing the day by the method AddDays(1) and count the working days according to your country (e.g. all days except Saturday and Sunday and a few fixed non-working official holidays).
+
+Another approach that might work is to subtract the dates to find the TimeSpan between them (DateTime values can be subtracted, just like a numbers). This will give you the count of days between the dates. You will need to perform some additional calculations to find how much weekends are included in this count and discard them.
+
+10.   Use String.Split(' ') to split the string by spaces. Then use Int32.Parse(…) to extract the separate numbers from the obtained string array as int values and sum them.
+
+11.   Use the class System.Random and its method Next(…) to select a random laudatory phrase, laudatory story, first name, last name and city and combine them.
+
+12.   Calculating a numeral expression is quite hard and is unlikely a beginner programmer to solve it correctly without external help. As a start check out the article in Wikipedia about the "Shunting-yard algorithm" (en.wikipedia.org/wiki/Shunting-yard_algorithm) describing how to convert an expression from to postfix notation (reversed Polish notation), and the article about calculating a postfix expression (en.wikipedia.org/wiki/Reverse_Polish notation). There are really much special cases, so be sure to test your solution carefully.
+
+Tree Data Structures
+
+Very often we have to describe a group of real life objects, which have such relation to one another that we cannot use linear data structures for their description. In this chapter, we will give examples of such branched structures. We will explain their properties and the real life problems, which inspired their creation and further development.
+
+A tree-like data structure or branched data structure consists of set of elements (nodes) which could be linked to other elements, sometimes hierarchically, sometimes not. Trees represent hierarchies, while graphs represent more general relations such as the map of city.
+
+Trees
+
+Trees are very often used in programming, because they naturally represent all kind of object hierarchies from our surroundings. Let’s give an example, before we explain the trees’ terminology.
+
+Example – Hierarchy of the Participants in a Project
+
+We have a team, responsible for the development of certain software project.
+
+The participants in it have manager-subordinates relations. Our team consists of 9 teammates:
+
+clip_image002
+
+What is the information we can get from this hierarchy? The direct boss of the developers is the "Team Leader", but indirectly they are subordinate to the "Project Manager". The "Team Leader" is subordinate only to the "Project Manager". On the other hand "Developer 1" has no subordinates. The "Project Manager" is the highest in the hierarchy and has no manager.
+
+The same way we can describe every participant in the project. We see that such a little figure gives us so much information.
+
+Trees Terminology
+
+For a better understanding of this part of the chapter we recommend to the reader at every step to draw an analogy between the abstract meaning and its practical usage in everyday life.
+
+clip_image004
+
+We will simplify the figure describing our hierarchy. We assume that it consists of circles and lines connecting them. For convenience we name the circles with unique numbers, so that we can easily specify about which one we are talking about.
+
+We will call every circle a node and each line an edge. Nodes "19", "21", "14" are below node "7" and are directly connected to it. This nodes we are called direct descendants (child nodes) of node "7", and node "7" their parent. The same way "1", "12" and "31" are children of "19" and "19" is their parent. Intuitively we can say that "21" is sibling of "19", because they are both children of "7" (the reverse is also true – "19" is sibling of "21").For "1", "12", "31", "23" and "6" node "7" precedes them in the hierarchy, so he is their indirect parent – ancestor, ant they are called his descendants.
+
+Root is called the node without parent. In our example this is node "7"
+
+Leaf is a node without child nodes. In our example – "1", "12", "31", "21", "23" and "6".
+
+Internal nodes are the nodes, which are not leaf or root (all nodes, which have parent and at least one child). Such nodes are "19" and "14".
+
+Path is called a sequence of nodes connected with edges, in which there is no repetition of nodes. Example of path is the sequence "1", "19", "7" and "21". The sequence "1", "19" and "23" is not a path, because "19" and "23" are not connected.
+
+Path length is the number of edges, connecting the sequence of nodes in the path. Actually it is equal to the number of nodes in the path minus 1. The length of our example for path ("1", "19", "7" and "21") is three.
+
+Depth of a node we will call the length of the path from the root to certain node. In our example "7" as root has depth zero, "19" has depth one and "23" – depth two.
+
+Here is the definition about tree:
+
+Tree – a recursive data structure, which consists of nodes, connected with edges. The following statements are true for trees:
+
+-     Each node can have 0 or more direct descendants (children).
+
+-     Each node has at most one parent. There is only one special node without parent – the root (if the tree is not empty).
+
+-     All nodes are reachable from the root – there is a path from the root to each node in the tree.
+
+We can give more simple definition of tree: a node is a tree and this node can have zero or more children, which are also trees.
+
+Height of tree – is the maximum depth of all its nodes. In our example the tree height is 2.
+
+Degree of node we call the number of direct children of the given node. The degree of "19" and "7" is three, but the degree of "14" is two. The leaves have degree zero.
+
+Branching factor is the maximum of the degrees of all nodes in the tree. In our example the maximum degree of the nodes is 3, so the branching factor is 3.
+
+Tree Implementation – Example
+
+Now we will see how to represent trees as data structure in programming. We will implement a tree dynamically. Our tree will contain numbers inside its nodes, and each node will have a list of zero or more children, which are trees too (following our recursive definition).
+
+Each node is recursively defined using itself. Each node of the tree (TreeNode<T>) contains a list of children, which are nodes (TreeNode<T>). The tree itself is another class Tree<T> which can be empty or can have a root node. Tree<T> implements basic operations over trees like construction and traversal.
+
+Let’s have a look at the source code of our dynamic tree representation:
+
+using System;
+
+using System.Collections.Generic;
+
+ 
+
+/// <summary>Represents a tree node</summary>
+
+/// <typeparam name="T">the type of the values in nodes
+
+/// </typeparam>
+
+public class TreeNode<T>
+
+{
+
+    // Contains the value of the node
+
+    private T value;
+
+ 
+
+    // Shows whether the current node has a parent or not
+
+    private bool hasParent;
+
+ 
+
+    // Contains the children of the node (zero or more)
+
+    private List<TreeNode<T>> children;
+
+ 
+
+    /// <summary>Constructs a tree node</summary>
+
+    /// <param name="value">the value of the node</param>
+
+    public TreeNode(T value)
+
+    {
+
+        if (value == null)
+
+        {
+
+            throw new ArgumentNullException(
+
+                "Cannot insert null value!");
+
+        }
+
+        this.value = value;
+
+        this.children = new List<TreeNode<T>>();
+
+    }
+
+ 
+
+    /// <summary>The value of the node</summary>
+
+    public T Value
+
+    {
+
+        get
+
+        {
+
+            return this.value;
+
+        }
+
+        set
+
+        {
+
+            this.value = value;
+
+        }
+
+    }
+
+ 
+
+    /// <summary>The number of node's children</summary>
+
+    public int ChildrenCount
+
+    {
+
+        get
+
+        {
+
+            return this.children.Count;
+
+        }
+
+    }
+
+ 
+
+    /// <summary>Adds child to the node</summary>
+
+    /// <param name="child">the child to be added</param>
+
+    public void AddChild(TreeNode<T> child)
+
+    {
+
+        if (child == null)
+
+        {
+
+            throw new ArgumentNullException(
+
+                "Cannot insert null value!");
+
+        }
+
+ 
+
+        if (child.hasParent)
+
+        {
+
+            throw new ArgumentException(
+
+                "The node already has a parent!");
+
+        }
+
+ 
+
+        child.hasParent = true;
+
+        this.children.Add(child);
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// Gets the child of the node at given index
+
+    /// </summary>
+
+    /// <param name="index">the index of the desired child</param>
+
+    /// <returns>the child on the given position</returns>
+
+    public TreeNode<T> GetChild(int index)
+
+    {
+
+        return this.children[index];
+
+    }
+
+}
+
+ 
+
+/// <summary>Represents a tree data structure</summary>
+
+/// <typeparam name="T">the type of the values in the
+
+/// tree</typeparam>
+
+public class Tree<T>
+
+{
+
+    // The root of the tree
+
+    private TreeNode<T> root;
+
+ 
+
+    /// <summary>Constructs the tree</summary>
+
+    /// <param name="value">the value of the node</param>
+
+    public Tree(T value)
+
+    {
+
+        if (value == null)
+
+        {
+
+            throw new ArgumentNullException(
+
+                "Cannot insert null value!");
+
+        }
+
+ 
+
+        this.root = new TreeNode<T>(value);
+
+    }
+
+ 
+
+    /// <summary>Constructs the tree</summary>
+
+    /// <param name="value">the value of the root node</param>
+
+    /// <param name="children">the children of the root
+
+    /// node</param>
+
+    public Tree(T value, params Tree<T>[] children)
+
+        : this(value)
+
+    {
+
+        foreach (Tree<T> child in children)
+
+        {
+
+            this.root.AddChild(child.root);
+
+        }
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// The root node or null if the tree is empty
+
+    /// </summary>
+
+    public TreeNode<T> Root
+
+    {
+
+        get
+
+        {
+
+            return this.root;
+
+        }
+
+    }
+
+ 
+
+    /// <summary>Traverses and prints tree in
+    /// Depth-First Search (DFS) manner</summary>
+
+    /// <param name="root">the root of the tree to be
+
+    /// traversed</param>
+
+    /// <param name="spaces">the spaces used for
+
+    /// representation of the parent-child relation</param>
+
+    private void PrintDFS(TreeNode<T> root, string spaces)
+
+    {
+
+        if (this.root == null)
+
+        {
+
+            return;
+
+        }
+
+ 
+
+        Console.WriteLine(spaces + root.Value);
+
+ 
+
+        TreeNode<T> child = null;
+
+        for (int i = 0; i < root.ChildrenCount; i++)
+
+        {
+
+            child = root.GetChild(i);
+
+            PrintDFS(child, spaces + "   ");
+
+        }
+
+    }
+
+ 
+
+    /// <summary>Traverses and prints the tree in
+
+    /// Depth-First Search (DFS) manner</summary>
+
+    public void TraverseDFS()
+
+    {
+
+        this.PrintDFS(this.root, string.Empty);
+
+    }
+
+}
+
+ 
+
+/// <summary>
+
+/// Shows a sample usage of the Tree<T> class
+
+/// </summary>
+
+public static class TreeExample
+
+{
+
+    static void Main()
+
+    {
+
+        // Create the tree from the sample
+
+        Tree<int> tree =
+
+            new Tree<int>(7,
+
+                new Tree<int>(19,
+
+                    new Tree<int>(1),
+
+                    new Tree<int>(12),
+
+                    new Tree<int>(31)),
+
+                new Tree<int>(21),
+
+                new Tree<int>(14,
+
+                    new Tree<int>(23),
+
+                    new Tree<int>(6))
+
+            );
+
+ 
+
+        // Traverse and print the tree using Depth-First-Search
+
+        tree.TraverseDFS();
+
+ 
+
+        // Console output:
+
+        // 7
+
+        //       19
+
+        //        1
+
+        //        12
+
+        //        31
+
+        //       21
+
+        //       14
+
+        //        23
+
+        //        6
+
+    }
+
+}
+
+How Does Our Implementation Work?
+
+Let’s discuss the given code a little. In our example we have a class Tree<T>, which implements the actual tree. We also have a class TreeNode<T>, which represents a single node of the tree.
+
+The functions associated with node, like creating a node, adding a child node to this node, and getting the number of children, are implemented at the level of TreeNode<T>.
+
+The rest of the functionality (traversing the tree for example) is implemented at the level of Tree<T>. Logically dividing the functionality between the two classes makes our implementation more flexible.
+
+The reason we divide the implementation in two classes is that some operations are typical for each separate node (adding a child for example), while others are about the whole tree (searching a node by its number). In this variant of the implementation, the tree is a class that knows its root and each node knows its children. In this implementation we can have an empty tree (when root = null).
+
+Here are some details about the TreeNode<T> implementation. Each node of the tree consists of private field value and a list of children – children. The list of children consists of elements of the same type. That way each node contains a list of references to its direct children. There are also public properties for accessing the values of the fields of the node. The methods that can be called from code outside the class are:
+
+-     AddChild(TreeNode<T> child) – adds a child
+
+-     TreeNode<T> GetChild(int index) – returns a child by given index
+
+-     ChildrenCount – returns the number of children of certain node
+
+To satisfy the condition that every node has only one parent we have defined private field hasParent, which determines whether this node has parent or not. This information is used only inside the class and we need it in the AddChild(Tree<T> child) method. Inside this method we check whether the node to be added already has parent and if so we throw and exception, saying that this is impossible.
+
+In the class Tree<T> we have only one get property TreeNode<T> Root, which returns the root of the tree.
+
+Depth-First-Search (DFS) Traversal
+
+In the class Tree<T> is implemented the method TraverseDFS(), that calls the private method PrintDFS(TreeNode<T> root, string spaces), which traverses the tree in depth and prints on the standard output its elements in tree layout using right displacement (adding spaces).
+
+The Depth-First-Search algorithm aims to visit each of the tree nodes exactly one. Such a visit of all nodes is called tree traversal. There are multiple algorithms to traverse a tree but in this chapter we will discuss only two of them: DFS (depth-first search) and BFS (breadth-first search).
+
+The DFS algorithm starts from a given node and goes as deep in the tree hierarchy as it can. When it reaches a node, which has no children to visit or all have been visited, it returns to the previous node. We can describe the depth-first search algorithm by the following simple steps:
+
+1.  Traverse the current node (e.g. print it on the console or process it in some way).
+
+2.  Sequentially traverse recursively each of the current nodes’ child nodes (traverse the sub-trees of the current node). This can be done by a recursive call to the same method for each child node.
+
+Creating a Tree
+
+We to make creating a tree easier we defined a special constructor, which takes for input parameters a node value and a list of its sub-trees. That allows us to give any number of arguments of type Tree<T> (sub-trees). We used exactly the same constructor for creating the example tree.
+
+Traverse the Hard Drive Directories
+
+Let’s start with another example of tree: the file system. Have you noticed that the directories on your hard drive are actually a hierarchical structure, which is a tree? We have folders (tree nodes) which may have child folders and files (which both are also tree nodes).
+
+You can think of many real life examples, where trees are used, right?
+
+Let’s get a more detailed view of Windows file system. As we know from our everyday experience, we create folders on the hard drive, which can contain subfolders and files. Subfolders can also contain subfolders and so on until you reach certain max depth limit.
+
+The directory tree of the file system is accessible through the build in .NET functionality: the class System.IO.DirectoryInfo. It is not present as a data structure, but we can get the subfolders and files of every directory, so we can traverse the file system tree by using a standard tree traversal algorithm, such as Depth-First Search (DFS).
+
+Below we can see what the typical directory tree in Windows looks like:
+
+clip_image006
+
+Recursive DFS Traversal of the Directories
+
+The next example illustrates how we can recursively traverse recursively the tree structure of given folder (using Depth-First-Search) and print on the standard output its content:
+
+DirectoryTraverserDFS.cs
+
+using System;
+
+using System.IO;
+
+ 
+
+/// <summary>
+
+/// Sample class, which traverses recursively given directory
+
+/// based on the Depth-First-Search (DFS) algorithm
+
+/// </summary>
+
+public static class DirectoryTraverserDFS
+
+{
+
+    /// <summary>
+
+    /// Traverses and prints given directory recursively
+
+    /// </summary>
+
+    /// <param name="dir">the directory to be traversed</param>
+
+    /// <param name="spaces">the spaces used for representation
+
+    /// of the parent-child relation</param>
+
+    private static void TraverseDir(DirectoryInfo dir,
+
+        string spaces)
+
+    {
+
+        // Visit the current directory
+
+        Console.WriteLine(spaces + dir.FullName);
+
+ 
+
+        DirectoryInfo[] children = dir.GetDirectories();
+
+ 
+
+        // For each child go and visit its sub-tree
+
+        foreach (DirectoryInfo child in children)
+
+        {
+
+            TraverseDir(child, spaces + "  ");
+
+        }
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// Traverses and prints given directory recursively
+
+    /// </summary>
+
+    /// <param name="directoryPath">the path to the directory
+
+    /// which should be traversed</param>
+
+    static void TraverseDir(string directoryPath)
+
+    {
+
+        TraverseDir(new DirectoryInfo(directoryPath),
+
+            string.Empty);
+
+    }
+
+ 
+
+    static void Main()
+
+    {
+
+        TraverseDir("C:\\");
+
+    }
+
+}
+
+As we can see the recursive traversal algorithm of the content of the directory is the same as the one we used for our tree.
+
+Here we can see part of the result of the traversal:
+
+C:\
+
+  C:\Config.Msi
+
+  C:\Documents and Settings
+
+    C:\Documents and Settings\Administrator
+
+    C:\Documents and Settings\Administrator\.ARIS70
+
+    C:\Documents and Settings\Administrator\.jindent
+
+    C:\Documents and Settings\Administrator\.nbi
+
+      C:\Documents and Settings\Administrator\.nbi\downloads
+
+      C:\Documents and Settings\Administrator\.nbi\log
+
+      C:\Documents and Settings\Administrator\.nbi\cache
+
+      C:\Documents and Settings\Administrator\.nbi\tmp
+
+      C:\Documents and Settings\Administrator\.nbi\wd
+
+    C:\Documents and Settings\Administrator\.netbeans
+
+      C:\Documents and Settings\Administrator\.netbeans\6.0
+
+…
+
+Note that the above program may crash with UnauthorizedAccessException in case you do not have access permissions for some folders on the hard disk. This is typical for some Windows installations so you could start the traversal from another directory to play with it, e.g. from "C:\Windows\assembly".
+
+Breath-First-Search (BFS)
+
+Let’s have a look at another way of traversing trees. Breath-First-Search (BFS) is an algorithm for traversing branched data structures (like trees and graphs). The BFS algorithm first traverses the start node, then all its direct children, then their direct children and so on. This approach is also known as the wavefront traversal, because it looks like the waves caused by a stone thrown into a lake.
+
+The Breath-First-Search (BFS) algorithm consists of the following steps:
+
+1.  Enqueue the start node in queue Q.
+
+2.  While Q is not empty repeat the following two steps:
+
+-    Dequeue the next node v from Q and print it.
+
+-    Add all children of v in the queue.
+
+The BFS algorithm is very simple and always traverses first the nodes that are closest to the start node, and then the more distant and so on until it reaches the furthest. The BFS algorithm is very widely used in problem solving, e.g. for finding the shortest path in a labyrinth.
+
+A sample implementation of BFS algorithms that prints all folders in the file system is given below:
+
+DirectoryTraverserBFS.cs
+
+using System;
+
+using System.Collections.Generic;
+
+using System.IO;
+
+ 
+
+/// <summary>
+
+/// Sample class, which traverses given directory
+
+/// based on the Breath-First-Search (BFS) algorithm
+
+/// </summary>
+
+public static class DirectoryTraverserBFS
+
+{
+
+    /// <summary>
+
+    /// Traverses and prints given directory with BFS
+
+    /// </summary>
+
+    /// <param name="directoryPath">the path to the directory         /// which should be traversed</param>
+
+    static void TraverseDir(string directoryPath)
+
+    {
+
+        Queue<DirectoryInfo> visitedDirsQueue =
+
+            new Queue<DirectoryInfo>();
+
+        visitedDirsQueue.Enqueue(new DirectoryInfo(directoryPath));
+
+        while (visitedDirsQueue.Count > 0)
+
+        {
+
+            DirectoryInfo currentDir = visitedDirsQueue.Dequeue();
+
+            Console.WriteLine(currentDir.FullName);
+
+ 
+
+            DirectoryInfo[] children = currentDir.GetDirectories();
+
+            foreach (DirectoryInfo child in children)
+
+            {
+
+                visitedDirsQueue.Enqueue(child);
+
+            }
+
+        }
+
+    }
+
+ 
+
+    static void Main()
+
+    {
+
+        TraverseDir(@"C:\");
+
+    }
+
+}
+
+If we start the program to traverse our local hard disk, we will see that the BFS first visits the directories closest to the root (depth 1), then the folders at depth 2, then depth 3 and so on. Here is a sample output of the program:
+
+C:\
+
+C:\Config.Msi
+
+C:\Documents and Settings
+
+C:\Inetpub
+
+C:\Program Files
+
+C:\RECYCLER
+
+C:\System Volume Information
+
+C:\WINDOWS
+
+C:\wmpub
+
+C:\Documents and Settings\Administrator
+
+C:\Documents and Settings\All Users
+
+C:\Documents and Settings\Default User
+
+…
+
+Binary Trees
+
+In the previous section we discussed the basic structure of a tree. In this section we will have a look at a specific type of tree – binary tree. This type of tree turns out to be very useful in programming. The terminology for trees is also valid about binary trees. Despite that below we will give some specific explanations about thus structure.
+
+Binary Tree – a tree, which nodes have a degree equal or less than 2 or we can say that it is a tree with branching degree of 2. Because every node’s children are at most 2, we call them left child and right child. They are the roots of the left sub-tree and the right sub-tree of their parent node. Some nodes may have only left or only right child, not both. Some nodes may have no children and are called leaves.
+
+Binary tree can be recursively defined as follows: a single node is a binary tree and can have left and right children which are also binary trees.
+
+Binary Tree – Example
+
+Here we have an example of binary tree. The nodes are again named with some numbers. An the figure we can see the root of the tree – "14", the left sub-tree (with root 19) and the right sub-tree (with root 15) and a right and left child – "3" and "21".
+
+ 
+
+clip_image008
+
+We have to note that there is one very big difference in the definition of binary tree from the definition of the classical tree – the order of the children of each node. The next example will illustrate that difference:
+
+clip_image010
+
+On this figure above two totally different binary trees are illustrated – the first one has root "19" and its left child "23" and the second root "19" and right child "23". If that was an ordinary tree they would have been the same. That’s why such tree we would illustrate the following way:
+
+clip_image012
+
+clip_image014
+
+Remember! Although we take binary trees as a special case of a tree structure, we have to notice that the condition for particular order of children nodes makes them a completely different structure.
+
+Binary Tree Traversal
+
+The traversal of binary tree is a classic problem which has classical solutions. Generally there are few ways to traverse a binary tree recursively:
+
+-     In-order (Left-Root-Right) – the traversal algorithm first traverses the left sub-tree, then the root and last the left sub-tree. In our example the sequence of such traversal is: "23", "19", "10", "6", "21", "14", "3", "15".
+
+-     Pre-order (Root-Left-Right) – in this case the algorithm first traverses the root, then the left sub-tree and last the right sub-tree. The result of such traversal in our example is: "14", "19", "23", "6", "10", "21", "15", "3".
+
+-     Post-order (Left-Right-Root) – here we first traverse the left sub-tree, then the right one and last the root. The result after the traversal is: "23", "10", "21", "6", "19", "3", "15", "14".
+
+Recursive Traversal of Binary Tree – Example
+
+The next example shows an implementation of binary tree, which we will traverse using the in-order recursive scheme.
+
+using System;
+
+using System.Collections.Generic;
+
+ 
+
+/// <summary>Represents a binary tree</summary>
+
+/// <typeparam name="T">Type of values in the tree</typeparam>
+
+public class BinaryTree<T>
+
+{
+
+    /// <summary>The value stored in the curent node</summary>
+
+    public T Value { get; set; }
+
+ 
+
+    /// <summary>The left child of the current node</summary>
+
+    public BinaryTree<T> LeftChild { get; private set; }
+
+ 
+
+    /// <summary>The right child of the current node</summary>
+
+    public BinaryTree<T> RightChild { get; private set; }
+
+   
+
+    /// <summary>Constructs a binary tree</summary>
+
+    /// <param name="value">the value of the tree node</param>
+
+    /// <param name="leftChild">the left child of the tree</param>
+
+    /// <param name="rightChild">the right child of the tree
+
+    /// </param>
+
+    public BinaryTree(T value,
+
+        BinaryTree<T> leftChild, BinaryTree<T> rightChild)
+
+    {
+
+        this.Value = value;
+
+        this.LeftChild = leftChild;
+
+        this.RightChild = rightChild;
+
+    }
+
+ 
+
+    /// <summary>Constructs a binary tree with no children
+
+    /// </summary>
+
+    /// <param name="value">the value of the tree node</param>
+
+    public BinaryTree(T value) : this(value, null, null)
+
+    {
+
+    }
+
+ 
+
+    /// <summary>Traverses the binary tree in pre-order</summary>
+
+    public void PrintInOrder()
+
+    {
+
+        // 1. Visit the left child
+
+        if (this.LeftChild != null)
+
+        {
+
+            this.LeftChild.PrintInOrder();
+
+        }
+
+ 
+
+        // 2. Visit the root of this sub-tree
+
+        Console.Write(this.Value + " ");
+
+ 
+
+        // 3. Visit the right child
+
+        if (this.RightChild != null)
+
+        {
+
+            this.RightChild.PrintInOrder();
+
+        }
+
+    }
+
+}
+
+ 
+
+/// <summary>
+
+/// Demonstrates how the BinaryTree<T> class can be used
+
+/// </summary>
+
+public class BinaryTreeExample
+
+{
+
+    static void Main()
+
+    {
+
+        // Create the binary tree from the sample
+
+        BinaryTree<int> binaryTree =
+
+            new BinaryTree<int>(14,
+
+                    new BinaryTree<int>(19,
+
+                          new BinaryTree<int>(23),
+
+                          new BinaryTree<int>(6,
+
+                                  new BinaryTree<int>(10),
+
+                                  new BinaryTree<int>(21))),
+
+                    new BinaryTree<int>(15,
+
+                          new BinaryTree<int>(3),
+
+                          null));
+
+ 
+
+        // Traverse and print the tree in in-order manner
+
+        binaryTree.PrintInOrder();
+
+        Console.WriteLine();
+
+ 
+
+        // Console output:
+
+        // 23 19 10 6 21 14 3 15
+
+    }
+
+}
+
+How Does the Example Work?
+
+This implementation of binary tree is slightly different from the one of the ordinary tree and is significantly simplified.
+
+We have a recursive class definition BinaryTree<T>, which holds a value and left and right child nodes which are of the same type BinaryTree<T>. We have exactly two child nodes (left and right) instead of list of children.
+
+The method PrintInOrder() works recursively using the DFS algorithm. It traverses each node in "in-order" (first the left child, then the node itself, then the right child). The DFS traversal algorithm performs the following steps:
+
+1.  Recursive call to traverse the left sub-tree of the given node.
+
+2.  Traverse the node itself (print its value).
+
+3.  Recursive call to traverse the right sub-tree.
+
+We highly recommend the reader to try and modify the algorithm and the source code of the given example to implement the other types of binary tree traversal of binary (pre-order and post-order) and see the difference.
+
+Ordered Binary Search Trees
+
+Till this moment we have seen how we can build traditional and binary trees. These structures are very summarized in themselves and it will be difficult for us to use them for a bigger project. Practically, in computer science special and programming variants of binary and ordinary trees are used that have certain special characteristics, like order, minimal depth and others. Let's review the most important trees used in programming.
+
+As examples for a useful properties we can give the ability to quickly search of an element by given value (Red-Black tree); order of the elements in the tree (ordered search trees); balanced depth (balanced trees); possibility to store an ordered tree in a persistent storage so that searching of an element to be fast with as little as possible read operations (B-tree), etc.
+
+In this chapter we will take a look at a more specific class of binary trees – ordered trees. They use one often met property of the nodes in the binary trees – unique identification key in every node. Important property of these keys is that they are comparable. Important kind of ordered trees are the so called "balanced search trees".
+
+Comparability between Objects
+
+Before continuing, we will introduce the following definition, which we will need for the further exposure.
+
+Comparability – we call two objects A and B comparable, if exactly one of following three dependencies exists:
+
+-     "A is less than B"
+
+-     "A is bigger than B"
+
+-     "A is equal to B"
+
+Similarly we will call two keys A and B comparable, if exactly one of the following three possibilities is true: A < B, A > B or A = B.
+
+The nodes of a tree can contain different fields but we can think about only their unique keys, which we want to be comparable. Let’s give an example. We have two specific nodes A and B:
+
+clip_image016
+
+In this case, the keys of A and B hold the integer numbers 19 and 7. From Mathematics we know that the integer numbers (unlike the complex numbers) are comparable, which according the above reasoning give us the right to use them as keys. That’s why we can say that “A is bigger than B”, because “19 is bigger than 17”.
+
+clip_image014[1]
+
+Please notice! In this case the numbers depicted on the nodes are their unique identification keys and not like before, just some numbers.
+
+And we arrive to the definition of the ordered binary search tree:
+
+Ordered Binary Tree (binary search tree) is a binary tree, in which every node has a unique key, every two of the keys are comparable and the tree is organized in a way that for every node the following is satisfied:
+
+-     All keys in the left sub-tree are smaller than its key.
+
+-     All keys in the right sub-tree are bigger than its key.
+
+Properties of the Ordered Binary Search Trees
+
+On the figure below we have given an example of an ordered binary search tree. We will use this example, to give some important properties of the binary tree’s order:
+
+clip_image018
+
+By definition we know that the left sub-tree of every node consists only of elements, which are smaller than itself, while in the right sub-tree there are only bigger elements. This means that if we want to find a given element, starting from the root, either we have found it or should search it respectively in its left or its right sub-tree, which will save unnecessary comparisons. For example, if we search 23 in our tree, we are not going to search for it in the left sub-tree of 19, because 23 is not there for sure (23 is bigger than 19, so eventually it is in the right sub-tree). This saves us 5 unnecessary comparisons with each of the left sub-tree elements, but if we were using a linked list, we would have to make these 5 comparisons.
+
+From the elements’ order follows that the smallest element in the tree is the leftmost successor of the root, if there is such or the root itself, if it does not have a left successor. In our example this is the minimal element 7 and the maximal – 35. Next useful property from this is, that every single element from the left sub-tree of given node is smaller than every single element from the right sub-tree of the same node.
+
+Ordered Binary Search Trees – Example
+
+The next example shows a simple implementation of a binary search tree. Our point is to suggest methods for adding, searching and removing an element in the tree. For every single operation from the above, we will give an explanation in details. Note that our binary search tree is not balanced and may have poor performance in certain circumstances.
+
+Ordered Binary Search Trees: Implementation of the Nodes
+
+Just like before, now we will define an internal class, which will describe a node’s structure. Thus we will clearly distinguish and encapsulate the structure of a node, which our tree will contain within itself. This separate class BinaryTreeNode<T> that we have defined as internal is visible only in the ordered tree’s class.
+
+Here is its definition:
+
+BinaryTreeNode.cs
+
+…
+
+/// <summary>Represents a binary tree node</summary>
+
+/// <typeparam name="T">Specifies the type for the values
+
+/// in the nodes</typeparam>
+
+internal class BinaryTreeNode<T> :
+
+    IComparable<BinaryTreeNode<T>> where T : IComparable<T>
+
+{
+
+    // Contains the value of the node
+
+    internal T value;
+
+ 
+
+    // Contains the parent of the node
+
+    internal BinaryTreeNode<T> parent;
+
+ 
+
+    // Contains the left child of the node
+
+    internal BinaryTreeNode<T> leftChild;
+
+ 
+
+    // Contains the right child of the node
+
+    internal BinaryTreeNode<T> rightChild;
+
+ 
+
+    /// <summary>Constructs the tree node</summary>
+
+    /// <param name="value">The value of the tree node</param>
+
+    public BinaryTreeNode(T value)
+
+    {
+
+        if (value == null)
+
+        {
+
+            // Null values cannot be compared -> do not allow them
+
+            throw new ArgumentNullException(
+
+                "Cannot insert null value!");
+
+        }
+
+ 
+
+        this.value = value;
+
+        this.parent = null;
+
+        this.leftChild = null;
+
+        this.rightChild = null;
+
+    }
+
+ 
+
+    public override string ToString()
+
+    {
+
+        return this.value.ToString();
+
+    }
+
+ 
+
+    public override int GetHashCode()
+
+    {
+
+        return this.value.GetHashCode();
+
+    }
+
+ 
+
+    public override bool Equals(object obj)
+
+    {
+
+        BinaryTreeNode<T> other = (BinaryTreeNode<T>)obj;
+
+        return this.CompareTo(other) == 0;
+
+    }
+
+ 
+
+    public int CompareTo(BinaryTreeNode<T> other)
+
+    {
+
+        return this.value.CompareTo(other.value);
+
+    }
+
+}
+
+…
+
+Let’s have a look to the proposed code. Still in the name of the structure, which we are considering – “ordered search tree”, we are talking about order and we can achieve this order only if we have comparability among the elements in the tree.
+
+Comparability between Objects in C#
+
+What does “comparability between objects” mean for us as developers? It means that we must somehow oblige everyone who uses our data structure, to create it passing it a type, which is comparable.
+
+In C# the sentence “type, which is comparable” will sound like this:
+
+T : IComparable<T>
+
+The interface IComparable<T>, located in the namespace System, specifies the method CompareTo(T obj), which returns a negative integer number, zero or a positive integer number respectively if the current object is less, equal or bigger than the one which is given to the method for comparing. Its definition looks approximately like this:
+
+public interface IComparable<T>
+
+{
+
+    /// <summary>Compares the current object with another
+
+    /// object of the same type.</summary>
+
+    int CompareTo(T other);
+
+}
+
+On one hand, the implementation of this interface by given class ensures us that its instances are comparable (more about interfaces in OOP can be found in the "Interfaces" section of the "Defining Classes" chapter).
+
+On the other hand, we need those nodes, described by BinaryTreeNode<T> class to be comparable between them too. That is why it implements IComparable<T> too. As it is shown in the code, the implementation of IComparable<T> to the BinaryTreeNode<T> class calls the type T’s implementation internally.
+
+In the code we have also implemented the methods Equals(Object obj) and GetHashCode() too. A good (recommended) practice is these two methods to be consistent in their behavior, i.e. when two objects are the same, then their hash-code is the same. As we will see in the chapter about hash tables, the opposite is not necessary at all. Similarly – the expected behavior of the Equals(Object obj) is to return true, exactly when CompareTo(T obj) returns 0.
+
+clip_image014[2]
+
+It’s recommended to sync the work of Equals(Object obj), CompareTo(T obj) and GetHashCode() methods. This is their expected behavior and it will save you a lot of hard to find problems.
+
+Till now, we have discussed the methods, suggested by our class. Now let’s see what fields it provides. They are respectively for value (the key) of type T parent – parent, left and right successor – leftChild and rightChild. The last three are of the type of the defining them class – BinaryTreeNode
+
+Ordered Binary Trees – Implementation of the Main Class
+
+Now, we go to the implementation of the class, describing an ordered binary tree – BinarySearchTree<T>. The tree by itself as a structure consists of a root node of type BinaryTreeNode<T>, which contains internally its successors – left and right. Internally they also contain their successors, thus recursively down until it reaches the leaves.
+
+An important thing is the definition BinarySearchTree<T> where T : IComparable<T>. This constraint of the type T is necessary because of the requirement of our internal class, which works only with types, implementing IComparable<T>. Due to this restriction we can use BinarySearchTree<int> and BinarySearchTree<string>, but cannot use BinarySearchTree<int[]> and BinarySearchTree<StreamReader>, because int[] and StreamReader are not comparable, while int and string are.
+
+BinarySearchTree.cs
+
+public class BinarySearchTree<T>    where T : IComparable<T>
+
+{
+
+    /// <summary>
+
+    /// Represents a binary tree node
+
+    /// </summary>
+
+    /// <typeparam name="T">The type of the nodes</typeparam>
+
+    internal class BinaryTreeNode<T> :
+
+        IComparable<BinaryTreeNode<T>> where T : IComparable<T>
+
+    {
+
+        // …
+
+        // … The implementation from above comes here!!! …
+
+        // …
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// The root of the tree
+
+    /// </summary>
+
+    private BinaryTreeNode<T> root;
+
+ 
+
+    /// <summary>
+
+    /// Constructs the tree
+
+    /// </summary>
+
+    public BinarySearchTree()
+
+    {
+
+        this.root = null;
+
+    }
+
+ 
+
+    // …
+
+    // … The implementation of tree operations come here!!! …
+
+    // …
+
+}
+
+As we mentioned above, now we will examine the following operations:
+
+-     insert an element;
+
+-     searching for an element;
+
+-     removing an element.
+
+Inserting an Element
+
+Inserting (or adding) an element in a binary search tree means to put a new element somewhere in the tree so that the tree must stay ordered. Here is the algorithm: if the tree is empty, we add the new element as a root. Otherwise:
+
+-     If the element is smaller than the root, we call recursively the same method to add the element in the left sub-tree.
+
+-     If the element is bigger than the root, we call recursively to the same method to add the element in the right sub-tree.
+
+-     If the element is equal to the root, we don’t do anything and exit from the recursion.
+
+We can clearly see how the algorithm for inserting a node, conforms to the rule “elements in the left sub-tree are less than the root and the elements in the right sub-tree are bigger than the root”. Here is a sample implementation of this method. You should notice that in the addition there is a reference to the parent, which is supported because the parent must be changed too.
+
+/// <summary>Inserts new value in the binary search tree
+
+/// </summary>
+
+/// <param name="value">the value to be inserted</param>
+
+public void Insert(T value)
+
+{
+
+    this.root = Insert(value, null, root);
+
+}
+
+ 
+
+/// <summary>
+
+/// Inserts node in the binary search tree by given value
+
+/// </summary>
+
+/// <param name="value">the new value</param>
+
+/// <param name="parentNode">the parent of the new node</param>
+
+/// <param name="node">current node</param>
+
+/// <returns>the inserted node</returns>
+
+private BinaryTreeNode<T> Insert(T value,
+
+        BinaryTreeNode<T> parentNode, BinaryTreeNode<T> node)
+
+{
+
+    if (node == null)
+
+    {
+
+        node = new BinaryTreeNode<T>(value);
+
+        node.parent = parentNode;
+
+    }
+
+    else
+
+    {
+
+        int compareTo = value.CompareTo(node.value);
+
+        if (compareTo < 0)
+
+        {
+
+            node.leftChild =
+
+                Insert(value, node, node.leftChild);
+
+        }
+
+        else if (compareTo > 0)
+
+        {
+
+            node.rightChild =
+
+                Insert(value, node, node.rightChild);
+
+        }
+
+    }
+
+ 
+
+    return node;
+
+}
+
+Searching for an Element
+
+Searching in a binary search tree is an operation which is more intuitive. In the sample code we have shown how the search of an element can be done without recursion and with iteration instead. The algorithm starts with element node, pointing to the root. After that we do the following:
+
+-     If the element is equal to node, we have found the searched element and return it.
+
+-     If the element is smaller than node, we assign to node its left successor, i.e. we continue the searching in the left sub-tree.
+
+-     If the element is bigger than node, we assign to node its right successor, i.e. we continue the searching in the right sub-tree.
+
+At the end, the algorithm returns the found node or null if there is no such node in the tree. Additionally we define a Boolean method that checks if certain value belongs to the tree. Here is the sample code:
+
+/// <summary>Finds a given value in the tree and
+
+/// return the node which contains it if such exsists
+
+/// </summary>
+
+/// <param name="value">the value to be found</param>
+
+/// <returns>the found node or null if not found</returns>
+
+private BinaryTreeNode<T> Find(T value)
+
+{
+
+    BinaryTreeNode<T> node = this.root;
+
+    while (node != null)
+
+    {
+
+        int compareTo = value.CompareTo(node.value);
+
+        if (compareTo < 0)
+
+        {
+
+            node = node.leftChild;
+
+        }
+
+        else if (compareTo > 0)
+
+        {
+
+            node = node.rightChild;
+
+        }
+
+        else
+
+        {
+
+            break;
+
+        }
+
+    }
+
+ 
+
+    return node;
+
+}
+
+ 
+
+/// <summary>Returns whether given value exists in the tree
+
+/// </summary>
+
+/// <param name="value">the value to be checked</param>
+
+/// <returns>true if the value is found in the tree</returns>
+
+public bool Contains(T value)
+
+{
+
+    bool found = this.Find(value) != null;
+
+    return found;
+
+}
+
+Removing an Element
+
+Removing is the most complicated operation from the basic binary search tree operations. After it the tree must keep its order.
+
+The first step before we remove an element from the tree is to find it. We already know how it happens. After that, we have 3 cases:
+
+-     If the node is a leaf – we point its parent’s reference to null. If the element has no parent, it means that it is a root and we just remove it.
+
+-     If the node has only one sub-tree – left or right, it is replacing with the root of this sub-tree.
+
+-     The node has two sub-trees. Then we have to find the smallest node in the right sub-tree and swap with it. After this exchange the node will have one sub-tree at most and then we remove it grounded on some of the above two rules. Here we have to say that it can be done analogical swap, just that we get the left sub-tree and it is the biggest element.
+
+We leave to the reader to check the correctness of these three steps, as a little exercise.
+
+Now, let’s see a sample removal in action. Again we will use our ordered tree, which we have displayed at the beginning of this point. For example, let’s remove the element with key 11.
+
+clip_image020
+
+The node 11 has two sub-trees and according to our algorithm, it must be exchanged with the smallest element from the right sub-tree, i.e. with 13. After the exchange, we can remove 11 (it is a leaf). Here is the final result:
+
+clip_image022
+
+Below is the sample code, which implements the described algorithm:
+
+/// <summary>Removes an element from the tree if exists
+
+/// </summary>
+
+/// <param name="value">the value to be deleted</param>
+
+public void Remove(T value)
+
+{
+
+    BinaryTreeNode<T> nodeToDelete = Find(value);
+
+    if (nodeToDelete != null)
+
+    {
+
+        Remove(nodeToDelete);
+
+    }
+
+}
+
+ 
+
+private void Remove(BinaryTreeNode<T> node)
+
+{
+
+    // Case 3: If the node has two children.
+
+    // Note that if we get here at the end
+
+    // the node will be with at most one child
+
+    if (node.leftChild != null && node.rightChild != null)
+
+    {
+
+        BinaryTreeNode<T> replacement = node.rightChild;
+
+        while (replacement.leftChild != null)
+
+        {
+
+            replacement = replacement.leftChild;
+
+        }
+
+        node.value = replacement.value;
+
+        node = replacement;
+
+    }
+
+ 
+
+    // Case 1 and 2: If the node has at most one child
+
+    BinaryTreeNode<T> theChild = node.leftChild != null ?
+
+            node.leftChild : node.rightChild;
+
+ 
+
+    // If the element to be deleted has one child
+
+    if (theChild != null)
+
+    {
+
+        theChild.parent = node.parent;
+
+ 
+
+        // Handle the case when the element is the root
+
+        if (node.parent == null)
+
+        {
+
+            root = theChild;
+
+        }
+
+        else
+
+        {
+
+            // Replace the element with its child sub-tree
+
+            if (node.parent.leftChild == node)
+
+            {
+
+                node.parent.leftChild = theChild;
+
+            }
+
+            else
+
+            {
+
+                node.parent.rightChild = theChild;
+
+            }
+
+        }
+
+    }
+
+    else
+
+    {
+
+        // Handle the case when the element is the root
+
+        if (node.parent == null)
+
+        {
+
+            root = null;
+
+        }
+
+        else
+
+        {
+
+            // Remove the element - it is a leaf
+
+            if (node.parent.leftChild == node)
+
+            {
+
+                node.parent.leftChild = null;
+
+            }
+
+            else
+
+            {
+
+                node.parent.rightChild = null;
+
+            }
+
+        }
+
+    }
+
+}
+
+We add also a DFS traversal method to enable printing the values stored in the tree in ascending order (in-order):
+
+/// <summary>Traverses and prints the tree</summary>
+
+public void PrintTreeDFS()
+
+{
+
+    PrintTreeDFS(this.root);
+
+    Console.WriteLine();
+
+}
+
+ 
+
+/// <summary>Traverses and prints the ordered binary search tree
+
+/// tree starting from given root node.</summary>
+
+/// <param name="node">the starting node</param>
+
+private void PrintTreeDFS(BinaryTreeNode<T> node)
+
+{
+
+    if (node != null)
+
+    {
+
+        PrintTreeDFS(node.leftChild);
+
+        Console.Write(node.value + " ");
+
+        PrintTreeDFS(node.rightChild);
+
+    }
+
+}
+
+Finally we demonstrate our ordered binary search tree in action:
+
+class BinarySearchTreeExample
+
+{
+
+    static void Main()
+
+    {
+
+        BinarySearchTree<string> tree =
+
+            new BinarySearchTree<string>();
+
+        tree.Insert("Telerik");
+
+        tree.Insert("Google");
+
+        tree.Insert("Microsoft");
+
+        tree.PrintTreeDFS(); // Google Microsoft Telerik
+
+        Console.WriteLine(tree.Contains("Telerik")); // True
+
+        Console.WriteLine(tree.Contains("IBM")); // False
+
+        tree.Remove("Telerik");
+
+        Console.WriteLine(tree.Contains("Telerik")); // False
+
+        tree.PrintTreeDFS(); // Google Microsoft
+
+    }
+
+}
+
+Note that when we print our binary search tree, it is always sorted in ascending order (in our case in alphabetical order). Thus in our example the binary search tree of strings behaves like a set of strings (we will explain the "Set" data structure in the chapter "Dictionaries, Hash Tables and Sets").
+
+It is important to know that our class BinarySearchTree<T> implements a binary search tree, but not balanced / self-balancing binary search tree. Although it works correctly, its performance can be poor in certain circumstances, like we shall explain in the next section. Balanced trees are more complex concept and use more complex algorithm which guarantees their balanced depth. Let’s take a look at them.
+
+Balanced Trees
+
+As we have seen above, the ordered binary trees are a very comfortable structure to search within. Defined in this way, the operations for creating and deleting the tree have a hidden flaw: they don't balance the tree and its depth could become very big.
+
+Think a bit what will happen if we sequentially include the elements: 1, 2, 3, 4, 5, 6? The ordered binary tree will look like this:
+
+clip_image024
+
+In this case, the binary tree degenerates into a linked list. Because of this the searching in this tree is going to be much slower (with N steps, not with log(N)), as to check whether an item is inside, in the worst case we will have to go through all elements.
+
+We will briefly mention the existence of data structures, which save the logarithmic behavior of the operations adding, searching and removing an element in the common case. We will introduce to you the following definitions before we go on to explain how they are achieved:
+
+Balanced binary tree – a binary tree in which no leaf is at “much greater” depth than any other leaf. The definition of “much greater” is rough depends on the specific balancing scheme.
+
+Perfectly balanced binary tree – binary tree in which the difference in the left and right tree nodes’ count of any node is at most one.
+
+Without going in details we will mention that when given binary search tree is balanced, even not perfectly balanced, then the operations of adding, searching and removing an element in it will run in approximately a logarithmic number of steps even in the worst case. To avoid imbalance in the tree to search, apply operations that rearrange some elements of the tree when adding or removing an item from it. These operations are called rotations in most of the cases. The type of rotation should be further specified and depends on the implementation of the specific data structure. As examples for structures like these we can give Red-Black tree, AVL-tree, AA-tree, Splay-tree and others.
+
+Balanced search trees allow quickly (in general case for approximately log(n) number of steps) to perform the operations like searching, adding and deleting of elements. This is due to two main reasons:
+
+-     Balanced search trees keep their elements ordered internally.
+
+-     Balanced search trees keep themselves balanced, i.e. their depth is always in order of log(n).
+
+Due to their importance in computer science we will talk about balanced search trees and their standard implementations in .NET Framework many times when we discuss data structures and their performance in this chapter and in the next few chapters.
+
+Balanced search trees can be binary or non-binary.
+
+Balanced binary search trees have multiple implementations like Red-Black Trees, AA Trees and AVL Trees. All of them are ordered, balanced and binary, so they perform insert / search / delete operations very fast.
+
+Non-binary balanced search trees also have multiple implementations with different special properties. Examples are B-Trees, B+ Trees and Interval Trees. All of them are ordered, balanced, but not binary. Their nodes can typically hold more than one key and can have more than two child nodes. These trees also perform operations like insert / search / delete very fast.
+
+For a more detailed examination of these and other structures we recommend the reader to look closely at literature about algorithms and data structures.
+
+The Hidden Class TreeSet<T> in .NET Framework
+
+Once we have seen ordered binary trees and seen what their advantage is comes the time to show and what C# has ready for us concerning them. Perhaps each of you secretly hoped that he / she will never have to implement a balanced ordered binary search tree, because it looks quite complicated.
+
+So far we have looked at what balanced trees are to get an idea about them. When you need to use them, you can always count on getting them from somewhere already implemented. In the standard libraries of the .NET Framework there are ready implementations of balanced trees, but also on the Internet you can find a lot of external libraries.
+
+In the namespace System.Collections.Generic a class TreeSet<T> exists, which is an implementation of a red-black tree. This, as we know, means that adding, searching and deleting items in the tree will be made with logarithmic complexity (i.e. if we have one million items operation will be performed for about 20 steps). The bad news is that this class is internal and it is visible only in this library. Fortunately, this class is used internally by a class, which is publicly available – SortedDictionary<T>. More info about the SortedDictionary<T> class you can find in the section "Sets" of chapter "Dictionaries, Hash-Tables and Sets".
+
+Graphs
+
+The graphs are very useful and fairly common data structures. They are used to describe a wide variety of relationships between objects and in practice can be related to almost everything. As we will see later, trees are a subset of the graphs and also lists are special cases of trees and thus of graphs, i.e. the graphs represent a generalized structure that allows modeling of very large set of real-world situations.
+
+Frequent use of graphs in practice has led to extensive research in "graph theory", in which there is a large number of known problems for graphs and for most of them there are well-known solutions.
+
+Graphs – Basic Concepts
+
+In this section we will introduce some of the important concepts and definitions. Some of them are similar to those introduced about the tree data structure, but as we shall see, there are very serious differences, because trees are just special cases of graphs.
+
+Let’s consider the following sample graph (which we would later call a finite and oriented). Again, like with trees, we have numbered the graph, as it is easier to talk about any of them specifically:
+
+clip_image026
+
+The circles of this scheme we will call vertices (nodes) and the arrows connecting them we will call directed edges. The vertex of which the arrow comes out we will call predecessor of that the arrow points. For example “19” is a predecessor of “1”. In this case, “1” is a successor of “19”. Unlike the structure tree, here each vertex can have more than one predecessor. Like “21”, it has three – “19”, “1” and “7”. If two of the vertices are connected with edge, then we say these two vertices are adjacent through this edge.
+
+Next follows the definition of finite directed graph.
+
+Finite directed graph is called the couple (V, E), in which V is a finite set of vertices and E is a finite set of directed edges. Each edge e that belongs to E is an ordered couple of vertices u and v or e = (u, v), which are defining it in a unique way.
+
+For better understanding of this definition we are strongly recommending to the reader to think of the vertices as they are cities, and the directed edges as one-way roads. That way, if one of the vertices is Sofia and the other is Paris, the one-way path (edge) will be called Sofia – Paris. In fact this is one of the classic examples for the use of the graphs – in tasks with paths.
+
+If instead of arrows, the vertices are connected with segments, then the segments will be called undirected edges, and the graph – undirected. Practically we can imagine that an undirected edge from vertex A to vertex B is two-way edge and equivalent to two opposite directed edges between the same two vertices:
+
+clip_image028
+
+Two vertices connected with an edge are called neighbors (adjacent).
+
+For the edges a weight function can be assigned, that associates each edge to a real number. These numbers we will call weights (costs). For examples of the weights we can mention some distance between neighboring cities, or the length of the directed connections between two neighboring cities, or the crossing function of a pipe, etc. A graph that has weights on the edges is called weighted. Here is how it is illustrated a weighted graph.
+
+clip_image030
+
+Path in a graph is a sequence of vertices v1, v2, …, vn,, such as there is an edge from vi to vi+1 for every i from 1 to n-1. In our example path is the sequence "1", "12", "19", "21". "7", "21" and "1" is not a path because there is no edge starting from "21" and ending in "1".
+
+Length of path is the number of edges connecting vertices in the sequence of the vertices in the path. This number is equal to the number of vertices in the path minus one. The length of our example for path "1", "12", "19", "21" is three.
+
+Cost of path in a weighted graph, we call the sum of the weights (costs) of the edges involved in the path. In real life the road from Sofia to Madrid, for example, is equal to the length of the road from Sofia to Paris plus the length of the road from Madrid to Paris. In our example, the length of the path "1", "12", "19" and "21" is equal to 3 + 16 + 2 = 21.
+
+Loop is a path in which the initial and the final vertex of the path match. Example of vertices forming loop are "1", "12" and "19". In the same time "1", "7" and "21" do not form a loop.
+
+Looping edge we will call an edge, which starts and ends in the same vertex. In our example the vertex "14" is looped.
+
+A connected undirected graph we call an undirected graph in which there is a path from each node to each other. For example, the following graph is not connected because there is no path from "1" to "7".
+
+clip_image032
+
+So we already have enough knowledge to define the concept tree in other way, as a special kind of graph:
+
+Tree – undirected connected graph without loops.
+
+As a small exercise we let the reader show why all definitions of tree we gave in this chapter are equivalent.
+
+Graphs – Presentations
+
+There are a lot of different ways to present a graph in the computer programming. Different representations have different properties and what exactly should be selected depends on the particular algorithm that we want to apply. In other words – we present the graph in a way, so that the operations that our algorithm does on it to be as fast as possible. Without falling into greater details we will set out some of the most common representations of graphs.
+
+-    List of successors – in this representation for each vertex v a list of successor vertices is kept (like the tree’s child nodes). Here again, if the graph is weighted, then to each element of the list of successors an additional field is added indicating the weight of the edge to it.
+
+-    Adjacency matrix – the graph is represented as a square matrix g[N][N], where if there is an edge from vi to vj, then the position g[i][j] is contains the value 1. If such an edge does not exist, the field g[i][j] is contains the value 0. If the graph is weighted, in the position g[i][j] we record weight of the edge, and matrix is called a matrix of weights. If between two nodes in this matrix there is no edge, then it is recorded a special value meaning infinity. If the graph is undirected, the adjacency matrix will be symmetrical.
+
+-     List of the edges – it is represented through the list of ordered pairs (vi, vj), where there is an edge from vi to vj. If the graph is weighted, instead ordered pair we have ordered triple, and its third element shows what the weight of the edge is.
+
+-     Matrix of incidence between vertices and edges – in this case, again we are using a matrix but with dimensions g[M][N], where N is the number of vertices, and M is the number of edges. Each column represents one edge, and each row a vertex. Then the column corresponding to the edge (vi, vj) will contain 1 only at position i and position j, and other items in this column will contain 0. If the edge is a loop, i.e. is (vi, vi), then on position i we record 2. If the graph we want to represent is oriented and we want to introduce edge from vi to vj, then to position i we write 1 and to the position j we write -1.
+
+The most commonly used representation of graphs is the list of successors.
+
+Graphs – Basic Operations
+
+The basic operations in a graph are:
+
+-     Creating a graph
+
+-     Adding / removing a vertex / edge
+
+-     Check whether an edge exists between two vertices
+
+-     Finding the successors of given vertex
+
+We will offer a sample implementation of the graph representation with a list of successors and we will show how to perform most of the operations. This kind of implementation is good when the most often operation we need is to get the list of all successors (child nodes) for a certain vertex. This graph representation needs a memory of order N + M where N is the number of vertices and M is the number of edges in the graph.
+
+In essence the vertices are numbered from 0 to N-1 and our Graph class holds for each vertex a list of the numbers of all its child vertices. It does not work with the nodes, but with their numbers in the range [0...N-1]. Let’s explore the source code of our sample graph:
+
+using System;
+
+using System.Collections.Generic;
+
+ 
+
+/// <summary>Represents a directed unweighted graph structure
+
+/// </summary>
+
+public class Graph
+
+{
+
+    // Contains the child nodes for each vertex of the graph
+
+    // assuming that the vertices are numbered 0 ... Size-1
+
+    private List<int>[] childNodes;
+
+ 
+
+    /// <summary>Constructs an empty graph of given size</summary>
+
+    /// <param name="size">number of vertices</param>
+
+    public Graph(int size)
+
+    {
+
+        this.childNodes = new List<int>[size];
+
+        for (int i = 0; i < size; i++)
+
+        {
+
+            // Assing an empty list of adjacents for each vertex
+
+            this.childNodes[i] = new List<int>();
+
+        }
+
+    }
+
+ 
+
+    /// <summary>Constructs a graph by given list of
+
+    /// child nodes (successors) for each vertex</summary>
+
+    /// <param name="childNodes">children for each node</param>
+
+    public Graph(List<int>[] childNodes)
+
+    {
+
+        this.childNodes = childNodes;
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// Returns the size of the graph (number of vertices)
+
+    /// </summary>
+
+    public int Size
+
+    {
+
+        get { return this.childNodes.Length; }
+
+    }
+
+ 
+
+    /// <summary>Adds new edge from u to v</summary>
+
+    /// <param name="u">the starting vertex</param>
+
+    /// <param name="v">the ending vertex</param>
+
+    public void AddEdge(int u, int v)
+
+    {
+
+        childNodes[u].Add(v);
+
+    }
+
+ 
+
+    /// <summary>Removes the edge from u to v if such exists
+
+    /// </summary>
+
+    /// <param name="u">the starting vertex</param>
+
+    /// <param name="v">the ending vertex</param>
+
+    public void RemoveEdge(int u, int v)
+
+    {
+
+        childNodes[u].Remove(v);
+
+    }
+
+ 
+
+    /// <summary>
+
+    /// Checks whether there is an edge between vertex u and v
+
+    /// </summary>
+
+    /// <param name="u">the starting vertex</param>
+
+    /// <param name="v">the ending vertex</param>
+
+    /// <returns>true if there is an edge between
+
+    /// vertex u and vertex v</returns>
+
+    public bool HasEdge(int u, int v)
+
+    {
+
+        bool hasEdge = childNodes[u].Contains(v);
+
+        return hasEdge;
+
+    }
+
+ 
+
+    /// <summary>Returns the successors of a given vertex
+
+    /// </summary>
+
+    /// <param name="v">the vertex</param>
+
+    /// <returns>list of all successors of vertex v</returns>
+
+    public IList<int> GetSuccessors(int v)
+
+    {
+
+        return childNodes[v];
+
+    }
+
+}
+
+To illustrate how our graph data structure works, we will create small program that creates a graph and traverses it by the DFS algorithm. To play a bit with graphs, the goal of our graph traversal algorithm will be to count how many connected components the graph has.
+
+By definition in undirected graph if a path exists between two nodes, they belong to the same connected component and if no path exists between two nodes, they belong to different connected components. For example consider the following undirected graph:
+
+clip_image034
+
+It has 3 connected components: {0, 4}, {1, 2, 6, 3} and {5}.
+
+The code below creates a graph corresponding to the figure above and by DFS traversal finds all its connected components. This is straightforward: pass through all vertices and once unvisited vertex is found, all connected to it vertices (directly or indirectly via some a path) are found by DFS traversal, each of them is printed and marked as visited. Below is the code:
+
+class GraphComponents
+
+{
+
+    static Graph graph = new Graph(new List<int>[] {
+
+        new List<int>() {4},     // successors of vertice 0
+
+        new List<int>() {1, 2, 6}, // successors of vertice 1
+
+        new List<int>() {1, 6},    // successors of vertice 2
+
+        new List<int>() {6},     // successors of vertice 3
+
+        new List<int>() {0},     // successors of vertice 4
+
+        new List<int>() {},      // successors of vertice 5
+
+        new List<int>() {1, 2, 3}  // successors of vertice 6
+
+    });
+
+ 
+
+    static bool[] visited = new bool[graph.Size];
+
+ 
+
+    static void TraverseDFS(int v)
+
+    {
+
+        if (!visited[v])
+
+        {
+
+            Console.Write(v + " ");
+
+            visited[v] = true;
+
+            foreach (int child in graph.GetSuccessors(v))
+
+            {
+
+                TraverseDFS(child);
+
+            }
+
+        }
+
+    }
+
+ 
+
+    static void Main()
+
+    {
+
+        Console.WriteLine("Connected graph components: ");
+
+        for (int v = 0; v < graph.Size; v++)
+
+        {
+
+            if (!visited[v])
+
+            {
+
+                TraverseDFS(v);
+
+                Console.WriteLine();
+
+            }
+
+        }
+
+    }
+
+}
+
+If we run the above code, we will get the following output (the connected components of our sample graph shown above):
+
+Connected graph components:
+
+0 4
+
+1 2 6 3
+
+5
+
+Common Graph Applications
+
+Graphs are used to model many situations of reality, and tasks on graphs model multiple real problems that often need to be resolved. We will give just a few examples:
+
+-     Map of a city can be modeled by a weighted oriented graph. On each street, edge is compared with a length, corresponding to the length of the street, and direction – the direction of movement. If the street is a two-way, it can be compared to two edges in both directions. At each intersection there is a node. In such a model there are natural tasks such as searching for the shortest path between two intersections, checking whether there is a road between two intersections, checking for a loop (if we can turn and go back to the starting position) searching for a path with a minimum number of turns, etc.
+
+-     Computer network can be modeled by an undirected graph, whose vertices correspond to the computers in the network, and the edges correspond to the communication channels between the computers. To the edges different numbers can be compared, such as channel capacity or speed of the exchange, etc. Typical tasks for such models of a network are checking for connectivity between two computers, checking for double-connectivity between two points (existence of double-secured channel, which remains active after the failure of any computer), finding a minimal spanning tree (MST), etc. In particular, the Internet can be modeled as a graph, in which are solved problems for routing packets, which are modeled as classical graph problems.
+
+-     The river system in a given region can be modeled by a weighted directed graph, where each river is composed of one or more edges, and each node represents the place where two or more rivers flow into another one. On the edges can be set values, related to the amount of water that goes through them. Naturally with this model there are tasks such as calculating the volume of water, passing through each vertex and anticipate of possible flood in increasing quantities.
+
+You can see that the graphs can be used to solve many real-world problems. Hundreds of books and research papers are written about graphs, graph theory and graph algorithms. There are dozens of classic tasks for graphs, for which there are known solutions or it is known that there is no efficient solution. The scope of this chapter does not allow mentioning all of them, but we hope that through the short presentation we have awaken your interest in graphs, graph algorithms and their applications and spur you to take enough time to solve the tasks about graphs in the exercises.
+
+Exercises
+
+1.    Write a program that finds the number of occurrences of a number in a tree of numbers.
+
+2.    Write a program that displays the roots of those sub-trees of a tree, which have exactly k nodes, where k is an integer.
+
+3.    Write a program that finds the number of leaves and number of internal vertices of a tree.
+
+4.    Write a program that finds in a binary tree of numbers the sum of the vertices of each level of the tree.
+
+5.    Write a program that finds and prints all vertices of a binary tree, which have for only leaves successors.
+
+6.    Write a program that checks whether a binary tree is perfectly balanced.
+
+7.    Let’s have as given a graph G(V, E) and two of its vertices x and y. Write a program that finds the shortest path between two vertices measured in number of vertices staying on the path.
+
+8.    Let’s have as given a graph G(V, E). Write a program that checks whether the graph is cyclic.
+
+9.    Implement a recursive traversal in depth in an undirected graph and a program to test it.
+
+10.   Write breadth first search (BFS), based on a queue, to traverse a directed graph.
+
+11.   Write a program that searches the directory C:\Windows\ and all its subdirectories recursively and prints all the files which have extension *.exe.
+
+12.   Define classes File {string name, int size} and Folder {string name, File[] files, Folder[] childFolders}. Using these classes, build a tree that contains all files and directories on your hard disk, starting from C:\Windows\. Write a method that calculates the sum of the sizes of files in a sub-tree and a program that tests this method. To crawl the directories use recursively crawl depth (DFS).
+
+13.   * Write a program that finds all loops in a directed graph.
+
+14.   Let’s have as given a graph G (V, E). Write a program that finds all connected components of the graph, i.e. finds all maximal connected sub-graphs. A maximal connected sub-graph of G is a connected graph such that no other connected sub-graphs of G, contains it.
+
+15.   Suppose we are given a weighted oriented graph G (V, E), in which the weights on the side are nonnegative numbers. Write a program that by a given vertex x from the graph finds the shortest paths from it to all other vertical.
+
+16.   We have N tasks to be performed successively. We are given a list of pairs of tasks for which the second is dependent on the outcome of the first and should be executed after it. Write a program that arranges tasks in such a way that each task is be performed after all the tasks which it depends on have been completed. If no such order exists print an appropriate message.
+
+Example: {1, 2}, {2, 5}, {2, 4}, {3, 1} a 3, 1, 2, 5, 4
+
+17.   An Eulerian cycle in a graph is called a loop that starts from a vertex, passes exactly once through all edges in the graph returns to the starting vertex. Vertices can be visited repeatedly. Write a program that by a given graph, finds whether the graph has an Euler loop.
+
+18.   A Hamiltonian cycle in a graph is a cycle containing every vertex in the graph exactly once. Write a program, which by given weighted oriented graph G (V, E), finds Hamiltonian loop with a minimum length, if such exists.
+
+Solutions and Guidelines
+
+1.    Traverse the tree recursively in depth (using DFS) and count the occurrences of the given number.
+
+2.    Traverse the tree recursively in depth (using DFS) and check for each node the given condition. For each node the number of nodes in its subtree is: 1 + the sum of the nodes of each of its child subtrees.
+
+3.    You can solve the problem by traversing the tree in depth recursively.
+
+4.    Use traversing in depth or breadth and when shifting from one node to another keep its level (depth). Knowing the levels of the nodes at each step, the wanted amount can be easily calculated.
+
+5.    You can solve the problem by recursively traversing the tree in depth and by checking the given condition.
+
+6.    By recursive traversal in depth (DFS) for every node of the tree calculate the depths of its left and right sub-trees. Then check immediately whether the condition of the definition for perfectly balanced tree is executed (check the difference between the left and right sub-tree’s depths).
+
+7.    Use the algorithm of traversing in breadth (BFS) as a base. In the queue put every node always along with its predecessor. This will help you to restore the path between the nodes (in reverse order).
+
+8.    Use traversing in depth or in breadth. Mark every node, if already visited. If at any time you reach to a node, which has already been visited, then you have found loop.
+
+Think about how you can find and print the loop itself. Here is an idea: while traversing every node keep its predecessor. If at any moment you reach a node that has already been visited, you should have a path to the initial node. The current path in the recursion stack is also a path to the wanted node. So at some point we have two different paths from one node to the initial node. By merging the two paths you can easily find the loop.
+
+9.    Use the DFS algorithm. Testing can be done with few example graphs.
+
+10.   Use the BFS algorithm. Instead of putting the vertices of the graph in the queue, put their numbers (0 … N-1). This will simplify the algorithm.
+
+11.   Use traversing in depth and System.IO.Directory class.
+
+12.   Use the example of the tree data structure given in this chapter. Each directory from the tree should two arrays (or lists) of descendants: subdirectories and files.
+
+13.   Use the solution of problem 8, but modify it so it does not stop when it finds a loop, but continues. For each loop you should check if you have already found it. This problem is more complex than you may expect!
+
+14.   Use the algorithms for traversing in breadth or depth as a base.
+
+15.   Use the Dijkstra’s algorithm (find it on the Internet).
+
+16.   The requested order is called "topological sorting of a directed graph". It can be implemented in two ways:
+
+For every task t we should know how many others tasks P(t) it depends on. We find task t0, which is independent, i.e. P(t0)=0 and we execute it. We reduce P(t) for every task, which depends from task t0. Again we look for a task, which is independent and we execute it. We repeat until the tasks end or until we find a moment when there is no task tk having P(tk)=0. In the last case no solution exists due to a cyclic dependency.
+
+We can solve the task with traversing the graph in depth and printing every node just before leaving it. That means that at any time of printing of a task, all the tasks that depend on it should have already been printed. The topological sorting will be produced in reversed order.
+
+17.   The graph must be connected and the degree of each of its nodes must be even in order an Eulerian cycle in a graph to exits (can you prove this?). With series of DFS traversals you can find cycles in the graph and to remove the edges involved in them. Finally, by joining the cycles you will get the Eulerian cycle. See more about Eulerian paths and cycles at http://en.wikipedia.org/wiki/Eulerian_path.
+
+18.   If you write a true solution of the problem, check whether it works for a graph with 200 nodes. Do not try to solve the problem so it could work with a large number of nodes! If someone manages to solve it for large numbers of nodes, he will remain permanently in history! See also the Wikipedia article http://en.wikipedia.org/wiki/Hamiltonian_path_problem. You might try some recursive algorithm for generating all paths but accept that it will be slow. Techniques like backtracking and branch and bound could help a bit but generally this problem is NP-complete and thus no efficient solution is known to exist for it.
