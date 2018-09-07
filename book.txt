@@ -1,4 +1,4 @@
-ggWhat Is an "Array"?
+ththggWhat Is an "Array"?
 
 Arrays are vital for most programming languages. They are collections of variables, which we call elements:
 
